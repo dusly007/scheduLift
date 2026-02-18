@@ -8,7 +8,7 @@ export class UsersController {
         constructor(private usersService: UsersService) {}
 
         @Post()
-        create(@Body() body : any) {
+        create(@Body() body : CreateUserDto) {
             console.log(body);
         }
 }
