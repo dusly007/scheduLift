@@ -7,3 +7,7 @@ Pour push sur github
 -   3)  git add .
 -   4)  git commit -m "Message de votre commit"
 -   5)  git push
+
+Installer Extensions
+1- Installer rest client
+2- SqLite
