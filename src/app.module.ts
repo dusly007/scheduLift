@@ -11,7 +11,8 @@ import { User } from './users/users.entity';
   type: 'sqlite',
   database: 'db.sqlite',
   entities: [User],
-  synchronize: true
+  synchronize: true,
+  autoLoadEntities: true,
 }
 ), 
 UsersModule],

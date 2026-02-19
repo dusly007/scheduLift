@@ -1,6 +1,10 @@
 - 1) npm init -y
 - 2)  installer npm install @nestjs/typeorm typeorm sqlite3
 - 3) npm install class-validator class-transformer
+- 4) npm install -g @nestjs/cli
+- 5) npx @nestjs/cli start --watch
+- 5) npm run start
+
 
 Pour push sur github
 -   1)  git init
