@@ -1,5 +1,5 @@
 ### create user test
-POST http://localhost:3000/users
+POST http://localhost:3005/auth
 content-type: application/json
  
 {
@@ -7,3 +7,10 @@ content-type: application/json
     "password": "mdp"
     
 }
+
+### tester route get users
+GET http://localhost:3005/auth
+
+
+### tester route get user by id
+GET http://localhost:3005/auth/9
