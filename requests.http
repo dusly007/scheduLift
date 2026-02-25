@@ -1,9 +1,12 @@
+### tester route get user by id
+GET http://localhost:3000/auth/1
+ 
 ### create user test
 POST http://localhost:3000/users
 content-type: application/json
-
+ 
 {
     "email": "sara@hotmail.com",
     "password": "mdp"
-    
+   
 }
