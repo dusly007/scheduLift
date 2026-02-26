@@ -3,7 +3,7 @@ POST http://localhost:3005/auth/signup
 content-type: application/json
  
 {
-    "email": "test@hotmail.com",
+    "email": "testtt@hotmail.com",
     "password": "mdp"
     
 }
@@ -13,7 +13,7 @@ POST http://localhost:3005/auth/signin
 content-type: application/json
  
 {
-    "email": "testtest@hotmail.com",
+    "email": "testt@hotmail.com",
     "password": "mdp"
     
 }
