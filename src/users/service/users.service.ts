@@ -17,6 +17,7 @@ export class UsersService {
     findOne(id: number) {
         return this.repo.findOneBy({ id });
     }
+
     findAllUsers() {
         return this.repo.find(); // Récupère tous les utilisateurs
     }
@@ -30,6 +31,9 @@ export class UsersService {
         Object.assign(user, attrs);
         return this.repo.save(user);
     }
- 
+    
+    async findAllUsersByEmail(email:string){
+        return await this.repo.findBy({email});
+    }
  
 }

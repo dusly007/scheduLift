@@ -1,12 +1,23 @@
 ### create user test
-POST http://localhost:3005/auth
+POST http://localhost:3005/auth/signup
 content-type: application/json
  
 {
-    "email": "sara@hotmail.com",
+    "email": "testtest@hotmail.com",
     "password": "mdp"
     
 }
+
+### signin user test
+POST http://localhost:3005/auth/signin
+content-type: application/json
+ 
+{
+    "email": "testtest@hotmail.com",
+    "password": "mdp"
+    
+}
+
 
 ### tester route get users
 GET http://localhost:3005/auth
