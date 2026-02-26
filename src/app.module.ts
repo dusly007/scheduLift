@@ -12,7 +12,7 @@ import { User } from './users/users.entity';
   database: 'db.sqlite',
   entities: [User],
   synchronize: true,
-  autoLoadEntities: true,
+  autoLoadEntities: true
 }
 ), 
 UsersModule],

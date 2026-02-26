@@ -31,6 +31,10 @@ export class UsersService {
         Object.assign(user, attrs);
         return this.repo.save(user);
     }
+    async findUserByEmail(email:string){
+        
+        return this.repo.findBy({email});
+    }
 
 
 }

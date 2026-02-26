@@ -1,5 +1,5 @@
 - 1) npm init -y
-- 2)  installer npm install @nestjs/typeorm typeorm sqlite3
+- 2) npm install @nestjs/typeorm typeorm sqlite3
 - 3) npm install class-validator class-transformer
 - 4) npm install -g @nestjs/cli
 - 5) npx @nestjs/cli start --watch
@@ -16,3 +16,7 @@ Pour push sur github
 Installer Extensions
 - 1) Installer rest client
 - 2) SQLite
+
+
+
+pour installer cookie-session : npm install cookie-session @types/cookie-session

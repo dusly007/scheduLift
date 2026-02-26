@@ -1,12 +1,32 @@
-### tester route get user by id
-GET http://localhost:3000/auth/1
- 
-### create user test
-POST http://localhost:3000/users
-content-type: application/json
+### test signup user with unique email
+POST  http://localhost:3000/auth/signup
+Content-Type: application/json
  
 {
-    "email": "sara@hotmail.com",
-    "password": "mdp"
    
+    "email": "alben2@hotmail.com",
+    "password": "mdp"
 }
+
+ 
+### test who is signin
+GET http://localhost:3000/auth/whoami
+ 
+### test login user with correct credentials
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+ 
+{
+    "email": "alben3@hotmail.com",
+    "password": "mdp"
+}
+ 
+### test all users
+GET http://localhost:3000/auth
+ 
+### tester route get user by id
+GET http://localhost:3000/auth/5
+ 
+### test signout user
+POST http://localhost:3000/auth/signout
+ 
