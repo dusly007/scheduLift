@@ -7,10 +7,14 @@ import { UserDto } from "./dtos/user.dto";
 // import { UseInterceptors, ClassSerializerInterceptor } from "@nestjs/common";
 import { Serialize } from "../interceptors/serialize.interceptor";
 import {AuthService} from './service/auth.service';
+import { CurrentUser } from "./decorators/current-user.decorator";
+import {User} from "./users.entity"
+import { CurrentUserInterceptor } from "./interceptors/current-user.interceptor";
 
 
 
 @Controller('auth')
+//@UseInterceptors(CurrentUserInterceptor)
 export class UsersController {
    
     constructor(private service: UsersService,
@@ -39,10 +43,12 @@ export class UsersController {
         }
 
         @Get('/whoAmI')
-        async whoAmI(@Session() session : any){
-            const user= await this.service.findOne(session.userId);
+        async whoAmI(@CurrentUser() user: User){
+           //const user = this.authService.whoAmI(session.userId);
+           //return user;
             return user;
-            }
+           
+        }
 
         @Post('/signout')
         signOut(@Session() session : any){

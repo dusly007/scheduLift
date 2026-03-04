@@ -4,7 +4,7 @@ Content-Type: application/json
  
 {
    
-    "email": "alben2@hotmail.com",
+    "email": "alben9@hotmail.com",
     "password": "mdp"
 }
 
@@ -17,7 +17,7 @@ POST http://localhost:3000/auth/signin
 Content-Type: application/json
  
 {
-    "email": "alben3@hotmail.com",
+    "email": "alben9@hotmail.com",
     "password": "mdp"
 }
  

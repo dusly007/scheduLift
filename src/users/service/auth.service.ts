@@ -59,4 +59,14 @@ export class AuthService {
         
         return user;
     }
+    /*whoAmI(userId: number){
+        
+        if(!userId){
+            return ("Personne n'est connectée");
+        }
+        else{
+            return this.usersService.findOne(userId);
+        }
+        
+    }*/
 }
