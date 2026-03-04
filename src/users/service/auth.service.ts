@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, Session } from '@nestjs/common';
 import { User } from '../user.entity';
 import { UsersService } from './users.service';
 import { error } from 'console';
@@ -57,5 +57,14 @@ export class AuthService {
         }
         return user;
         //return'this action will sign up a user'
+    }
+
+    whoami(userId : number){
+        if( !userId ){
+            return "personne n'est connecté"
+        }
+        else{
+           return this.usersService.findOne(userId);
+        }
     }
 }

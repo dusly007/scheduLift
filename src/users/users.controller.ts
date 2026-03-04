@@ -7,7 +7,11 @@ import { SerializeInterceptor } from "src/interceptors/serialize.interceptor";
 import { UserDto } from "./dtos/user.dto";
 import { Serialize } from "src/interceptors/serialize.interceptor"; 
 import { AuthService } from "./service/auth.service";
+import { CurrentUser } from "./decorateur/current-user.decorator";
+import { User } from "./user.entity";
+import { CurrentUserInterceptor } from "./interceptors/current-user.interceptor";
 
+@UseInterceptors(CurrentUserInterceptor)
 @Controller('auth')
 export class UsersController {
    
@@ -41,14 +45,17 @@ export class UsersController {
             //return user;
         }
 
-
         @Get('/whoami')
-        whoAmI(@Session() session : any) {
-            const user = this.usersService.findOne(session.userId);
-            return user;
- 
-           
+        whoAmI(@CurrentUser() user : User){
+            console.log(user)
+            return user
         }
+
+        //@Get('/whoami')
+        //whoAmI(@Session() session : any, @CurrentUser() user : any) {
+        //    console.log('ici ', this.authService.whoami(session.userId));
+        //    return this.authService.whoami(session.userId);     
+        //}
  
 
  
@@ -56,6 +63,7 @@ export class UsersController {
         updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
              return this.usersService.updateUser(parseInt(id), body);
         }
+
         //@UseInterceptors(ClassSerializerInterceptor)
         //@UseInterceptors(new SerializeInterceptor(UserDto))
         @Serialize(UserDto)
@@ -63,6 +71,7 @@ export class UsersController {
         findUser(@Param('id') id: string) {
             return this.usersService.findOne(parseInt(id));
         }
+
         @Get()
         findAllUsers() {
             return this.usersService.findAllUsers();
