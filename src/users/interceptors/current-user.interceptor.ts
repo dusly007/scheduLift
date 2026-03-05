@@ -16,6 +16,7 @@ export class CurrentUserInterceptor implements NestInterceptor{
 
         const userId = request.session.userId || {}
         
+        //gestion d'erreur bloque l'app( pas de user au début(signin) donc bloque)
         if(!userId){    
             //throw new ('aucun Id utilisateur trouver')
             //console.log('aucun Id utilisateur trouver') 

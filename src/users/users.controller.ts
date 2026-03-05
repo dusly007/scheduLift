@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Session } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Session, UseGuards } from "@nestjs/common";
 import { UsersService } from "./service/users.service";
 import { CreateUserDto } from "./dtos/create-user.dto";
 import { UpdateUserDto } from "./dtos/update-user-dto";
@@ -10,8 +10,12 @@ import { AuthService } from "./service/auth.service";
 import { CurrentUser } from "./decorateur/current-user.decorator";
 import { User } from "./user.entity";
 import { CurrentUserInterceptor } from "./interceptors/current-user.interceptor";
+import { AuthGuard } from "src/guards/auth.guards";
+import { AdminGuard } from "src/guards/admin.guards";
+import { CurrentUserMiddleware } from "./middlewares/currentUser.middleware";
 
 @UseInterceptors(CurrentUserInterceptor)
+
 @Controller('auth')
 export class UsersController {
    
@@ -66,14 +70,23 @@ export class UsersController {
 
         //@UseInterceptors(ClassSerializerInterceptor)
         //@UseInterceptors(new SerializeInterceptor(UserDto))
+        @UseGuards(AdminGuard)
         @Serialize(UserDto)
         @Get('/:id')
         findUser(@Param('id') id: string) {
             return this.usersService.findOne(parseInt(id));
         }
-
+        
+        @UseGuards(AuthGuard)
         @Get()
         findAllUsers() {
             return this.usersService.findAllUsers();
         }
+
+        @UseGuards(AdminGuard)
+        @Delete('/:id')
+        removeUser(@Param('id') id: string){
+            return this.usersService.removeUser(parseInt(id))
+        }
+
 }

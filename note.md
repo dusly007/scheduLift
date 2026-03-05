@@ -1,0 +1,1 @@
+decorateur ne fait pas d'injection donc intercepteur

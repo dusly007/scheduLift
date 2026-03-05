@@ -17,4 +17,7 @@ export class User {
     logInsert(){
         console.log(`Inserted user with id: ${this.id}`);
     }
+
+    @Column({default : false})
+    admin: boolean;
 }

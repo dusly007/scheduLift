@@ -3,7 +3,7 @@ POST http://localhost:3005/auth/signup
 content-type: application/json
  
 {
-    "email": "tesgttt@hotmail.com",
+    "email": "notttadmin@hotmail.com",
     "password": "mdp"
     
 }
@@ -13,7 +13,7 @@ POST http://localhost:3005/auth/signin
 content-type: application/json
  
 {
-    "email": "tesgttt@hotmail.com",
+    "email": "notadmin@hotmail.com",
     "password": "mdp"
     
 }
@@ -37,4 +37,7 @@ GET http://localhost:3005/auth
 
 
 ### tester route get user by id
-GET http://localhost:3005/auth/9
+GET http://localhost:3005/auth/11
+
+### tester route delete user en étant
+DELETE http://localhost:3005/auth/10
