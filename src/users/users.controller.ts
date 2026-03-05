@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Session, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Session, UseGuards, UseInterceptors } from "@nestjs/common";
 import { UsersService } from "./service/users.service";
 import { CreateUserDto } from "./dtos/create-user.dto";
 import { UpdateUserDto } from "./dtos/update-user.dto";
@@ -10,10 +10,13 @@ import {AuthService} from './service/auth.service';
 import { CurrentUser } from "./decorators/current-user.decorator";
 import {User} from "./users.entity"
 import { CurrentUserInterceptor } from "./interceptors/current-user.interceptor";
+import { AuthGuards } from "../guards/auth.guard"; 
+import { Admin } from "typeorm";
+import { AdminGuards } from "src/guards/admin.guard";
 
-
-
+//@UseInterceptors(CurrentUserInterceptor)
 @Controller('auth')
+
 //@UseInterceptors(CurrentUserInterceptor)
 export class UsersController {
    
@@ -42,6 +45,7 @@ export class UsersController {
             return user;
         }
 
+        @UseGuards(AuthGuards) // auth guard 
         @Get('/whoAmI')
         async whoAmI(@CurrentUser() user: User){
            //const user = this.authService.whoAmI(session.userId);
@@ -56,7 +60,7 @@ export class UsersController {
             
             }
         
- 
+        @UseGuards(AuthGuards) // auth guard  
         @Patch('/:id')
         updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
              return this.service.updateUser(parseInt(id), body);
@@ -64,14 +68,22 @@ export class UsersController {
        // @UseInterceptors(ClassSerializerInterceptor)
        // @UseInterceptors(new SerializeInterceptor(UserDto))
         @Serialize(UserDto)
+        @UseGuards(AuthGuards) // auth guard 
         @Get('/:id')
         findUser(@Param('id') id: string) {
             console.log('Handler is running');
             return this.service.findOne(parseInt(id));
         }
  
+        @UseGuards(AdminGuards)
         @Get()
         findAllUsers() {
             return this.service.findAllUsers();
+        }
+        
+        @UseGuards(AdminGuards)
+        @Delete('/:id')
+        removeUser(@Param('id') id: string){
+            return this.service.removeUser(parseInt(id));
         }
 }

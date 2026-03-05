@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "./users.entity";
 import { UsersService } from "./service/users.service";
@@ -7,16 +7,24 @@ import { AuthService } from './service/auth.service';
 import { CurrentUser } from "./decorators/current-user.decorator";
 import { CurrentUserInterceptor } from "./interceptors/current-user.interceptor";
 import {APP_INTERCEPTOR} from '@nestjs/core'
+import { CurrentUserMiddleware } from "./middlewares/current-user.middleware";
 
 @Module({
     imports: [TypeOrmModule.forFeature([User])],
     // providers: [UsersService, AuthService, CurrentUserInterceptor],
     controllers: [UsersController],
-    providers: [UsersService, AuthService, {
-      provide: APP_INTERCEPTOR,
-      useClass: CurrentUserInterceptor
-    }]
+    providers: [UsersService, AuthService, 
+      //{
+      //provide: APP_INTERCEPTOR,
+      //useClass: CurrentUserInterceptor
+      //}
+    ]
   })
-  export class UsersModule {}
+  export class UsersModule  implements NestModule{
+    configure(consumer: MiddlewareConsumer){
+      consumer.apply(CurrentUserMiddleware)
+      .forRoutes('*'); //appliquer middleware à toutes les routes module
+    }
+  }
 
   //ajouter le guard pour bloquer la route

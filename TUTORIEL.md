@@ -19,4 +19,8 @@ Installer Extensions
 
 
 
-pour installer cookie-session : npm install cookie-session @types/cookie-session
+pour installer cookie-session : npm install cookie-session @types/cookie-session 
+cookie session(Midle v)
+pour avoir besoin d'interceptor ?
+
+Affichage--> palette de commande --> sqlite --> sqlite open data

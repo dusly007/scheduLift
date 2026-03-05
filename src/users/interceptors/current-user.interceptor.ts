@@ -15,12 +15,15 @@ export class CurrentUserInterceptor implements NestInterceptor{
         const userId = request.session.userId ||{};
 
         // trouver l'utilisateur dans la base de donnée en utilisant le userId
-       /* if(!userId){
+       /* On ne peut pas gerer une exception ou retourner une erreur dans interceptor car ca bloque toute l'application.
+       
+       if(!userId){
             
             throw new NotFoundException('user not found');
         }
             request.currentUser = user;
 */
+        
             if(userId){
             
                 const user = this.usersService.findOne(userId);

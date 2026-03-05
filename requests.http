@@ -4,7 +4,7 @@ Content-Type: application/json
  
 {
    
-    "email": "alben9@hotmail.com",
+    "email": "saraaissat@hotmail.com",
     "password": "mdp"
 }
 
@@ -17,7 +17,7 @@ POST http://localhost:3000/auth/signin
 Content-Type: application/json
  
 {
-    "email": "alben9@hotmail.com",
+    "email": "alben2@hotmail.com",
     "password": "mdp"
 }
  
@@ -29,4 +29,7 @@ GET http://localhost:3000/auth/5
  
 ### test signout user
 POST http://localhost:3000/auth/signout
+
+### delete user 
+DELETE  http://localhost:3000/auth/9
  
