@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException, Session } from '@nestjs/common';
-import { User } from '../user.entity';
-import { UsersService } from './users.service';
+import { User } from 'src/users/user.entity';
+import { UsersService } from 'src/users/service/users.service';
 import { error } from 'console';
 import { randomBytes, scrypt as _scrypt} from 'crypto'; //pour generer notre salt
 import { promisify } from 'util'; // pour transformer scrypt en une fonction quiretourne une promesse

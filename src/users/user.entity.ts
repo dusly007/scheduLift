@@ -1,5 +1,12 @@
 import {Entity, PrimaryGeneratedColumn, Column, AfterInsert} from 'typeorm'; 
 import { Exclude } from 'class-transformer';
+
+export enum UserRole {
+  CLIENT = 'client',
+  COACH = 'coach',
+  ADMIN = 'admin',
+}
+
 @Entity()
 export class User {
     
@@ -12,6 +19,9 @@ export class User {
     @Exclude()
     @Column()
     password: string;
+
+    @Column({ type: 'varchar', default: UserRole.CLIENT })
+    role: UserRole;
 
     @AfterInsert()
     logInsert(){
