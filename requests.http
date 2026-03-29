@@ -13,7 +13,7 @@ POST http://localhost:3005/auth/signin
 content-type: application/json
  
 {
-    "email": "notadmin@hotmail.com",
+    "email": "notttadmin@hotmail.com",
     "password": "mdp"
     
 }
@@ -41,3 +41,6 @@ GET http://localhost:3005/auth/11
 
 ### tester route delete user en étant
 DELETE http://localhost:3005/auth/10
+
+### Importation des cours depuis l'API 
+POST http://localhost:3005/courses/import
