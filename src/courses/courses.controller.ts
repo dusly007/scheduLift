@@ -11,6 +11,12 @@ export class CoursesController {
     @Post('/import')
     import() {
         return this.coursesService.importAPi();
-  }
+    }
+
+    @Patch('/:id/toggle')
+    toggleActive(@Param('id') id: string) {
+        return this.coursesService.toggleActive(parseInt(id));
+    }
+
     
 }

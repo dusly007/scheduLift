@@ -16,7 +16,7 @@ import { CurrentUserMiddleware } from "./middlewares/currentUser.middleware";
 
 @UseInterceptors(CurrentUserInterceptor)
 
-@Controller('auth')
+@Controller('users')
 export class UsersController {
    
         constructor(private usersService: UsersService ,private  authService: AuthService) {}

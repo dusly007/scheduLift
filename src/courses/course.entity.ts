@@ -20,7 +20,7 @@ export class Course {
   @Column({ default: 10 })
   capacity: number;
 
-  @Column({ default: true })
+  @Column({ default: false })
   isActive: boolean;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })

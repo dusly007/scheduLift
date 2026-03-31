@@ -1,5 +1,5 @@
 ### create user test
-POST http://localhost:3005/auth/signup
+POST http://localhost:3005/users/signup
 content-type: application/json
  
 {
@@ -33,14 +33,18 @@ GET http://localhost:3005/auth/whoami
 
 
 ### tester route get users
-GET http://localhost:3005/auth
+GET http://localhost:3005/users
 
 
 ### tester route get user by id
-GET http://localhost:3005/auth/11
+GET http://localhost:3005/users/11
 
 ### tester route delete user en étant
-DELETE http://localhost:3005/auth/10
+DELETE http://localhost:3005/users/10
 
 ### Importation des cours depuis l'API 
 POST http://localhost:3005/courses/import
+
+
+### Activer pu désactiver un cours
+PATCH http://localhost:3005/courses/1/toggle
