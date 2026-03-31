@@ -1,0 +1,50 @@
+### create user test
+POST http://localhost:3005/users/signup
+content-type: application/json
+ 
+{
+    "email": "notttadmin@hotmail.com",
+    "password": "mdp"
+    
+}
+
+### signin user test
+POST http://localhost:3005/auth/signin
+content-type: application/json
+ 
+{
+    "email": "notttadmin@hotmail.com",
+    "password": "mdp"
+    
+}
+
+### signout user test
+POST http://localhost:3005/auth/signout
+content-type: application/json
+ 
+{
+    "email": "test@hotmail.com",
+    "password": "mdp"
+    
+}
+
+### tester route get users
+GET http://localhost:3005/auth/whoami
+
+
+### tester route get users
+GET http://localhost:3005/users
+
+
+### tester route get user by id
+GET http://localhost:3005/users/11
+
+### tester route delete user en étant
+DELETE http://localhost:3005/users/10
+
+### Importation des cours depuis l'API 
+POST http://localhost:3005/courses/import
+
+
+### Activer pu désactiver un cours
+PATCH http://localhost:3005/courses/1/toggle
