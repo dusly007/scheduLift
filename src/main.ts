@@ -9,7 +9,6 @@ async function bootstrap() {
   app.use(cookieSession({
     keys : ['mysecretkey']
   }));
-
   app.useGlobalPipes(new ValidationPipe(
     {
       whitelist: true,
