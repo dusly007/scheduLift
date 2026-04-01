@@ -34,4 +34,32 @@ POST http://localhost:3000/auth/signout
 DELETE  http://localhost:3000/auth/9
 
 
- 
+ ### test create course
+POST http://localhost:3000/courses
+Content-Type: application/json
+
+{
+    "title": "",
+    "description": "",
+    "price": 0
+}
+
+### test get all courses
+GET http://localhost:3000/courses
+
+### tester route get course by id
+GET http://localhost:3000/courses/1
+
+### test update course
+PATCH http://localhost:3000/courses/1
+Content-Type: application/json
+
+{
+    "title": ""
+}
+
+### delete course
+DELETE http://localhost:3000/courses/1
+
+### test import api courses
+POST http://localhost:3000/courses/import
