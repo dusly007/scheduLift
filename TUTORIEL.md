@@ -2,8 +2,11 @@
 - 2) npm install @nestjs/typeorm typeorm sqlite3
 - 3) npm install class-validator class-transformer
 - 4) npm install -g @nestjs/cli
-- 5) npx @nestjs/cli start --watch
-- 5) npm run start
+- 5) npm install cookie-session @types/cookie-session 
+- 6) npm install @nestjs/platform-express
+- 7) npm install @nestjs/axios axios
+- 8) npx @nestjs/cli start --watch
+- 8) npm run start
 
 
 Pour push sur github
@@ -19,7 +22,8 @@ Installer Extensions
 
 
 
-pour installer cookie-session : npm install cookie-session @types/cookie-session 
+pour installer cookie-session : 
+npm install cookie-session @types/cookie-session 
 cookie session(Midle v)
 pour avoir besoin d'interceptor ?
 

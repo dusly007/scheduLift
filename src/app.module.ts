@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/users.entity';
+import { ContactModule } from './contact/contact.module';
+import { WaitListModule } from './wait-list/wait-list.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot(
@@ -15,7 +17,7 @@ import { User } from './users/users.entity';
   autoLoadEntities: true
 }
 ), 
-UsersModule],
+UsersModule, ContactModule, WaitListModule],
   controllers: [AppController],
   providers: [AppService],
 })
