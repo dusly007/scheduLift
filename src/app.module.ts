@@ -3,21 +3,23 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/users.entity';
-import { ContactModule } from './contact/contact.module';
-import { WaitListModule } from './wait-list/wait-list.module';
-
+import { User } from './users/user.entity';
+import { AuthModule } from './auth/auth.module';
+import { CoursesModule } from './courses/courses.module';
+ 
 @Module({
   imports: [TypeOrmModule.forRoot(
     {
   type: 'sqlite',
   database: 'db.sqlite',
-  entities: [User],
-  synchronize: true,
-  autoLoadEntities: true
+  //entities: [User],
+  autoLoadEntities: true,
+  synchronize: true
 }
-), 
-UsersModule, ContactModule, WaitListModule],
+),
+UsersModule,
+AuthModule,
+CoursesModule],
   controllers: [AppController],
   providers: [AppService],
 })

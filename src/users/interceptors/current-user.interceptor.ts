@@ -1,47 +1,32 @@
-import { NestInterceptor, UseInterceptors, ExecutionContext, CallHandler, Injectable} from "@nestjs/common";
+import { BadRequestException, CallHandler, ExecutionContext, Injectable, NestInterceptor, Session } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { CurrentUser } from "../decorators/current-user.decorator";
-import { UsersService } from "../service/users.service";
-import {NotFoundException } from '@nestjs/common';
+import { UsersService } from "../service/users.service"; 
+import { error } from "console";
+import { ExternalExceptionFilter } from "@nestjs/core/exceptions/external-exception-filter";
 
 @Injectable()
 export class CurrentUserInterceptor implements NestInterceptor{
 
-    constructor(private usersService : UsersService){}
-   
+    constructor(private usersService: UsersService) {}
+
     intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> | Promise<Observable<any>> {
-        //trouver l'id de l'utilisateur courant à partir du userId stocké dans la session,
+
+        //trouver le id de l'utilisateur current
         const request = context.switchToHttp().getRequest();
-        const userId = request.session.userId ||{};
 
-        // trouver l'utilisateur dans la base de donnée en utilisant le userId
-       /* On ne peut pas gerer une exception ou retourner une erreur dans interceptor car ca bloque toute l'application.
-       
-       if(!userId){
-            
-            throw new NotFoundException('user not found');
+        const userId = request.session.userId || {}
+        
+        //gestion d'erreur bloque l'app( pas de user au début(signin) donc bloque)
+        if(!userId){    
+            //throw new ('aucun Id utilisateur trouver')
+            //console.log('aucun Id utilisateur trouver') 
         }
-            request.currentUser = user;
-*/
-        
-            if(userId){
-            
-                const user = this.usersService.findOne(userId);
-                request.currentUser = user;
-            }
-            
-     
-       
-        // assigner l'utilisateur trouvé à une nouvelle propriété sur la requette
+        // trouver l'utilisateur current
+        const user = this.usersService.findOne(userId)
 
-        
-        //go pour request handler ou next interceptor
-        return next.handle()
-    
+        //assigner l'utilisateur trouvé à une nouvelle propriété sur la requete
+        request.currentUser = user;
+
+       return next.handle();
     }
 }
-
-
- 
-    
-    

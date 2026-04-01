@@ -1,65 +1,84 @@
-### test signup user with unique email
-POST  http://localhost:3000/auth/signup
-Content-Type: application/json
+### create user test
+POST http://localhost:3005/auth/signup
+content-type: application/json
  
 {
-   
-    "email": "saraaissat@hotmail.com",
+    "email": "notadmin@hotmail.com",
     "password": "mdp"
+    
 }
 
- 
-### test who is signin
-GET http://localhost:3000/auth/whoami
- 
-### test login user with correct credentials
-POST http://localhost:3000/auth/signin
-Content-Type: application/json
+### signin user test
+POST http://localhost:3005/auth/signin
+content-type: application/json
  
 {
-    "email": "alben2@hotmail.com",
+    "email": "notadmin@hotmail.com",
     "password": "mdp"
+    
 }
+
+### signout user test
+POST http://localhost:3005/auth/signout
+content-type: application/json
  
-### test all users
-GET http://localhost:3000/auth
- 
+{
+    "email": "test@hotmail.com",
+    "password": "mdp"
+    
+}
+
+### tester route get users
+GET http://localhost:3005/auth/whoami
+
+
+### tester route get users
+GET http://localhost:3005/users
+
+
 ### tester route get user by id
-GET http://localhost:3000/auth/5
- 
-### test signout user
-POST http://localhost:3000/auth/signout
+GET http://localhost:3005/users/11
 
-### delete user 
-DELETE  http://localhost:3000/auth/9
+### tester route delete user en étant
+DELETE http://localhost:3005/users/10
+
+### Importation des cours depuis l'API 
+POST http://localhost:3005/courses/import
 
 
- ### test create course
-POST http://localhost:3000/courses
+### Activer pu désactiver un cours
+PATCH http://localhost:3005/courses/1/toggle
+
+
+### test create course
+POST http://localhost:3005/courses
 Content-Type: application/json
 
 {
-    "title": "",
-    "description": "",
-    "price": 0
+  "title": "Yogaa",
+  "bodyPart": "Full body",
+  "description": "Cours de yoga debutant",
+  "gifUrl": "https://example.com/yoga.gif",
+  "capacity": 15
+
 }
 
 ### test get all courses
-GET http://localhost:3000/courses
+GET http://localhost:3005/courses
 
 ### tester route get course by id
-GET http://localhost:3000/courses/1
+GET http://localhost:3005/courses/2
 
 ### test update course
-PATCH http://localhost:3000/courses/1
+PATCH http://localhost:3005/courses/2
 Content-Type: application/json
 
 {
-    "title": ""
+    "title": "Cardio Intensif"
 }
 
 ### delete course
-DELETE http://localhost:3000/courses/1
+DELETE http://localhost:3005/courses/1
 
 ### test import api courses
-POST http://localhost:3000/courses/import
+POST http://localhost:3005/courses/import

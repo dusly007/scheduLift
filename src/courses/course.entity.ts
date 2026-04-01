@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-
 @Entity()
 export class Course {
   @PrimaryGeneratedColumn()
@@ -9,8 +8,8 @@ export class Course {
   @Column()
   title: string;
 
-  @Column({ nullable: true })
-  bodyPart: string; 
+  //@Column()
+  //bodyPart: string; 
 
   @Column({ type: 'text', nullable: true })
   description: string;
@@ -21,7 +20,7 @@ export class Course {
   @Column({ default: 10 })
   capacity: number;
 
-  @Column({ default: true })
+  @Column({ default: false })
   isActive: boolean;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
