@@ -78,7 +78,7 @@ Content-Type: application/json
 }
 
 ### delete course
-DELETE http://localhost:3005/courses/1
+DELETE http://localhost:3005/courses/2
 
 ### test import api courses
 POST http://localhost:3005/courses/import
