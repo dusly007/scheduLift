@@ -16,6 +16,7 @@ export class CoursesService {
     //methode async
     async createCourse(attrs: CreateCourseDto) {
         const course = this.repo.create(attrs);
+        return await this.repo.save(course);
     }
 
     findAllCourses() {
