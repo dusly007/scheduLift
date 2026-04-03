@@ -30,6 +30,7 @@ export class CoursesService {
 
     //methode pour api
     //créer des exo et non cours pour l'instant il faudrait trouver un moyen dutiliser API pour créer des cours
+    //seed: générer des données de départ automatiquement
     async importAPi() {
     const options = {
         method: 'GET',
