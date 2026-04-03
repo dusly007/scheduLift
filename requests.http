@@ -1,9 +1,9 @@
 ### create user test
-POST http://localhost:3005/users/signup
+POST http://localhost:3005/auth/signup
 content-type: application/json
  
 {
-    "email": "notttadmin@hotmail.com",
+    "email": "notadmin@hotmail.com",
     "password": "mdp"
     
 }
@@ -13,7 +13,7 @@ POST http://localhost:3005/auth/signin
 content-type: application/json
  
 {
-    "email": "notttadmin@hotmail.com",
+    "email": "notadmin@hotmail.com",
     "password": "mdp"
     
 }
@@ -48,3 +48,37 @@ POST http://localhost:3005/courses/import
 
 ### Activer pu désactiver un cours
 PATCH http://localhost:3005/courses/1/toggle
+
+
+### test create course
+POST http://localhost:3005/courses
+Content-Type: application/json
+
+{
+  "title": "Yogaa",
+  "bodyPart": "Full body",
+  "description": "Cours de yoga debutant",
+  "gifUrl": "https://example.com/yoga.gif",
+  "capacity": 15
+
+}
+
+### test get all courses
+GET http://localhost:3005/courses
+
+### tester route get course by id
+GET http://localhost:3005/courses/2
+
+### test update course
+PATCH http://localhost:3005/courses/2
+Content-Type: application/json
+
+{
+    "title": "Cardio Intensif"
+}
+
+### delete course
+DELETE http://localhost:3005/courses/2
+
+### test import api courses
+POST http://localhost:3005/courses/import
