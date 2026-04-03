@@ -1,0 +1,52 @@
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Reservation } from './entity/reservation.entity';
+import { CoursesService } from '../courses/courses.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+
+@Injectable()
+export class ReservationsService {
+        constructor(
+        @InjectRepository(Reservation) private repo: Repository<Reservation>,
+        private coursesService: CoursesService,
+        private eventEmitter: EventEmitter2,
+    ) {}
+
+    async createReservation(userId: number, courseId:number){
+        //vérifier cours existe
+        const course = await this.coursesService.findCourseById(courseId);
+
+        //vérifier cours actif
+        if (!course.isActive){
+            throw new BadRequestException('Ce cours n\'est pas disponible');
+        }
+
+        //vérifier capacité
+        const reservations = await this.repo.find({where:{courseId}});
+        if (reservations.length >= course.capacity){
+            throw new BadRequestException('Vous avez déjà réservé ce cours');
+        }
+
+        const reservation = this.repo.create({userId, courseId})
+        return await this.repo.save(reservation)
+    }
+
+    findAllReservations(){
+        return this.repo.find();
+    }
+
+    findReservationsByUser(userId: number){
+        return this.repo.find({ where: { userId } });
+    }
+
+    findAllReservationsByCourse(courseId: number) {
+        return this.repo.find({ where: { courseId } });
+    }
+
+    //A FAIRE
+    async cancelReservation(id: number){
+
+    }
+
+}

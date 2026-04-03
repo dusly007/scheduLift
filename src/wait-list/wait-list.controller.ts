@@ -1,4 +1,34 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { WaitListService } from './wait-list.service';
+import { AuthGuard } from 'src/auth/guards/auth.guards';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { User } from '../users/user.entity';
+import { CreateWaitListDto } from './dtos/create-wait-list.dto';
 
+@UseGuards(AuthGuard) 
 @Controller('wait-list')
-export class WaitListController {}
+export class WaitListController {
+    constructor(private waitlistService: WaitListService) {}
+
+    @Post()
+    addToWaitlist(@Body() body: CreateWaitListDto, @CurrentUser() user: User) {
+        return this.waitlistService.addToWaitlist(user.id, body.courseId);
+    }
+
+    @Get('/course/:id')
+    findWaitlistByCourse(@Param('id') id: string) {
+        return this.waitlistService.findWaitlistByCourse(parseInt(id));
+    }
+
+    
+    @Get('/user')
+    findMyWaitlist(@CurrentUser() user: User) {
+        return this.waitlistService.findWaitlistByUser(user.id);
+    }
+
+    
+    @Delete('/:id')
+    removeFromWaitlist(@Param('id') id: string) {
+        return this.waitlistService.removeFromWaitlist(parseInt(id));
+    }
+}

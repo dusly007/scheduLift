@@ -10,7 +10,7 @@ import { AuthService } from "src/auth/auth.service";
 import { CurrentUser } from "../auth/decorators/current-user.decorator";
 import { User } from "./user.entity";
 import { CurrentUserInterceptor } from "./interceptors/current-user.interceptor";
-import { AuthGuard } from "src/users/guards/auth.guards";
+import { AuthGuard } from "src/auth/guards/auth.guards";
 import { AdminGuard } from "src/users/guards/admin.guards";
 import { CurrentUserMiddleware } from "./middlewares/currentUser.middleware";
 

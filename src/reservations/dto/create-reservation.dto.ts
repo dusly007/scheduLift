@@ -1,6 +1,6 @@
 import { IsNumber } from 'class-validator';
 
-export class CreateWaitListDto {
+export class CreateReservationDto {
     @IsNumber()
     courseId: number;
 }

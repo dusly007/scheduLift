@@ -1,25 +1,28 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
-import { User } from '../users/user.entity';
-import { Course } from '../courses/course.entity';
+import { User } from 'src/users/user.entity';
+import { Course } from 'src/courses/course.entity';
 
 @Entity()
-export class WaitList {
+export class Reservation{
     @PrimaryGeneratedColumn()
-    id: number;
+    id:number;
 
     @Column()
     userId: number;
 
     @Column()
-    courseId: number;
+    courseId: number
 
     @ManyToOne(() => User)
-    user: User;
+    //plusieurs réservations --> 1 user
+    User: User;
 
     @ManyToOne(() => Course)
+    //plusieurs réservations --> 1 cours
     course: Course;
 
     @CreateDateColumn()
-    createdAt: Date; 
+    createdAt: Date;
+
 
 }
