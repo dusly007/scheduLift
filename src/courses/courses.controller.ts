@@ -1,6 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Session, UseGuards } from "@nestjs/common";
 import { CoursesService } from "./courses.service";
 import { CreateCourseDto } from "./dtos/create-course.dto";
+import { CurrentUser } from "src/auth/decorators/current-user.decorator";
+import { User } from "src/users/user.entity";
+
 @Controller('courses')
 export class CoursesController {
 
@@ -8,9 +11,10 @@ export class CoursesController {
     //faire les routes des autres méthode
 
     @Post()
-    create(@Body() body: CreateCourseDto) {
-      return this.coursesService.createCourse(body);
+    create(@Body() body: CreateCourseDto, @CurrentUser() user : User) {
+      return this.coursesService.createCourse(body, user);
     }
+
     @Get()
     findAllCourses() {
       return this.coursesService.findAllCourses();

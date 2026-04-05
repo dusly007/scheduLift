@@ -3,7 +3,7 @@ POST http://localhost:3005/auth/signup
 content-type: application/json
  
 {
-    "email": "notadmin@hotmail.com",
+    "email": "admin@hotmail.com",
     "password": "mdp"
     
 }
@@ -13,7 +13,7 @@ POST http://localhost:3005/auth/signin
 content-type: application/json
  
 {
-    "email": "notadmin@hotmail.com",
+    "email": "admin@hotmail.com",
     "password": "mdp"
     
 }
@@ -82,3 +82,31 @@ DELETE http://localhost:3005/courses/2
 
 ### test import api courses
 POST http://localhost:3005/courses/import
+
+# Créer une réservation
+POST http://localhost:3005/reservations
+Content-Type: application/json
+Body: { "courseId": 1 }
+
+# Voir toutes les réservations
+GET http://localhost:3005/reservations
+
+# Voir mes réservations
+GET http://localhost:3005/reservations/user
+
+# Annuler une réservation
+DELETE http://localhost:3005/reservations/1
+
+# S'inscrire sur la liste d'attente
+POST http://localhost:3005/waitlist
+Content-Type: application/json
+Body: { "courseId": 1 }
+
+# Voir la liste d'attente d'un cours
+GET http://localhost:3005/waitlist/course/1
+
+# Voir mes listes d'attente
+GET http://localhost:3005/waitlist/user
+
+# Se retirer de la liste d'attente
+DELETE http://localhost:3005/waitlist/1
