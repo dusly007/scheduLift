@@ -3,7 +3,7 @@ POST http://localhost:3005/auth/signup
 content-type: application/json
  
 {
-    "email": "admin@hotmail.com",
+    "email": "admin1@hotmail.com",
     "password": "mdp"
     
 }
@@ -13,7 +13,7 @@ POST http://localhost:3005/auth/signin
 content-type: application/json
  
 {
-    "email": "admin@hotmail.com",
+    "email": "admin1@hotmail.com",
     "password": "mdp"
     
 }
@@ -37,17 +37,17 @@ GET http://localhost:3005/users
 
 
 ### tester route get user by id
-GET http://localhost:3005/users/11
+GET http://localhost:3005/users/19
 
 ### tester route delete user en étant
-DELETE http://localhost:3005/users/10
+DELETE http://localhost:3005/users/1
 
 ### Importation des cours depuis l'API 
 POST http://localhost:3005/courses/import
 
 
 ### Activer pu désactiver un cours
-PATCH http://localhost:3005/courses/1/toggle
+PATCH http://localhost:3005/courses/2/toggle
 
 
 ### test create course
