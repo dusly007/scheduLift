@@ -46,7 +46,20 @@ export class ReservationsService {
 
     //A FAIRE
     async cancelReservation(id: number){
+        const reservation = await this.repo.findOneBy({id});
 
+        if(!reservation){
+            throw new NotFoundException('Réservation non trouvé')
+        }
+
+        const {courseId} = reservation;
+        await this.repo.remove(reservation);
+
+        this.eventEmitter.emit(
+            'cancel.reservation',({courseId})
+        )
+
+        return {message: 'Réservation annulé avec succès'}
     }
 
 }

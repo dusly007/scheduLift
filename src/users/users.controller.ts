@@ -1,20 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Session, UseGuards } from "@nestjs/common";
 import { UsersService } from "./service/users.service";
-import { CreateUserDto } from "../auth/dtos/create-user.dto";
-import { UpdateUserDto } from "./dtos/update-user-dto";
-import { UseInterceptors, ClassSerializerInterceptor } from "@nestjs/common";
-import { SerializeInterceptor } from "src/users/interceptors/serialize.interceptor";
-import { UserDto } from "./dtos/user.dto";
-import { Serialize } from "src/users/interceptors/serialize.interceptor"; 
+import { UpdateUserDto } from "./dtos/update-user-dto"; 
 import { AuthService } from "src/auth/auth.service";
-import { CurrentUser } from "../auth/decorators/current-user.decorator";
-import { User } from "./user.entity";
-import { CurrentUserInterceptor } from "./interceptors/current-user.interceptor";
 import { AuthGuard } from "src/auth/guards/auth.guards";
 import { AdminGuard } from "src/users/guards/admin.guards";
-import { CurrentUserMiddleware } from "./middlewares/currentUser.middleware";
 
-@UseInterceptors(CurrentUserInterceptor)
 
 @Controller('users')
 export class UsersController {
@@ -26,10 +16,8 @@ export class UsersController {
              return this.usersService.updateUser(parseInt(id), body);
         }
 
-        //@UseInterceptors(ClassSerializerInterceptor)
-        //@UseInterceptors(new SerializeInterceptor(UserDto))
+        
         @UseGuards(AdminGuard)
-        @Serialize(UserDto)
         @Get('/:id')
         findUser(@Param('id') id: string) {
             return this.usersService.findOne(parseInt(id));

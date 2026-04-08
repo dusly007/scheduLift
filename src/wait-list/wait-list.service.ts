@@ -56,10 +56,18 @@ export class WaitListService {
         await this.repo.remove(waitlist);
         return { message: 'Retiré de la liste d\'attente avec succès' };
     }
-
+/*
     //A FAIRE
     //patron observateur
     //quand on cancel
-
+    @OnEvent('cancel.reservation')
+    async moveNext(playload: {courseId}){
+        //trouver le premier de la liste(FIFO)
+        const next = 
+        //ne rien faire si personne  
+        // Créer une réservation pour le premier en attente
+       //Retirer de la liste d'attente
+    }
+*/
 
 }
