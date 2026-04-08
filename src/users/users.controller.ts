@@ -20,7 +20,7 @@ import { CurrentUserMiddleware } from "./middlewares/currentUser.middleware";
 export class UsersController {
    
         constructor(private usersService: UsersService ,private  authService: AuthService) {}
- 
+        @UseGuards(AuthGuard)
         @Patch('/:id')
         updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
              return this.usersService.updateUser(parseInt(id), body);
