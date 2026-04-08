@@ -12,7 +12,7 @@ export class AuthController {
         async create(@Body() body : CreateUserDto, @Session() session: any) {
             //console.log(body);
             //return this.usersService.create(body.email, body.password);
-            const user = await this.authService.signup(body.email, body.password);
+            const user = await this.authService.signup(body.email, body.password, body.role);
             session.userId = user.id
             return user;
         }
