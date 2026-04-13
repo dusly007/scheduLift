@@ -25,8 +25,14 @@ export class ReservationsService {
         //vérifier capacité
         const reservations = await this.repo.find({where:{courseId}});
         if (reservations.length >= course.capacity){
-            throw new BadRequestException('Vous avez déjà réservé ce cours');
+            throw new BadRequestException('Ce cours est complet, vous pouvez vous inscrire sur la liste d\'attente');
         }
+
+        const dejaReserve = await this.repo.findOne({ where: { userId, courseId } });
+            if (dejaReserve) {
+                throw new BadRequestException('Vous avez déjà réservé ce cours');
+    }
+
 
         const reservation = this.repo.create({userId, courseId})
         return await this.repo.save(reservation)

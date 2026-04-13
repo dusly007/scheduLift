@@ -28,6 +28,6 @@ export class User {
         console.log(`Inserted user with id: ${this.id}`);
     }
 
-    @Column({default : true})
-    admin: boolean;
+    //@Column({default : true})
+    //admin: boolean;
 }

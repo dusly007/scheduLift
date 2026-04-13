@@ -3,8 +3,9 @@ POST http://localhost:3005/auth/signup
 content-type: application/json
  
 {
-    "email": "admin@hotmail.com",
-    "password": "mdp"
+    "email": "addmin@hotmail.com",
+    "password": "mdp",
+    "role": "admin"
     
 }
 
@@ -13,7 +14,7 @@ POST http://localhost:3005/auth/signin
 content-type: application/json
  
 {
-    "email": "admin@hotmail.com",
+    "email": "addmin@hotmail.com",
     "password": "mdp"
     
 }
@@ -40,7 +41,7 @@ GET http://localhost:3005/users
 GET http://localhost:3005/users/11
 
 ### tester route delete user en étant
-DELETE http://localhost:3005/users/10
+DELETE http://localhost:3005/users/18
 
 ### Importation des cours depuis l'API 
 POST http://localhost:3005/courses/import
@@ -83,30 +84,35 @@ DELETE http://localhost:3005/courses/2
 ### test import api courses
 POST http://localhost:3005/courses/import
 
-# Créer une réservation
+### Créer une réservation
 POST http://localhost:3005/reservations
 Content-Type: application/json
-Body: { "courseId": 1 }
 
-# Voir toutes les réservations
+{
+  "courseId": 3
+}
+### Voir toutes les réservations
 GET http://localhost:3005/reservations
 
-# Voir mes réservations
+### Voir mes réservations
 GET http://localhost:3005/reservations/user
 
-# Annuler une réservation
+### Annuler une réservation
 DELETE http://localhost:3005/reservations/1
 
-# S'inscrire sur la liste d'attente
-POST http://localhost:3005/waitlist
+### S'inscrire sur la liste d'attente
+POST http://localhost:3005/wait-list
 Content-Type: application/json
-Body: { "courseId": 1 }
 
-# Voir la liste d'attente d'un cours
+{
+     "courseId": 2 
+}
+
+### Voir la liste d'attente d'un cours
 GET http://localhost:3005/waitlist/course/1
 
-# Voir mes listes d'attente
-GET http://localhost:3005/waitlist/user
+### Voir mes listes d'attente
+GET http://localhost:3005/wait-list/user
 
-# Se retirer de la liste d'attente
+### Se retirer de la liste d'attente
 DELETE http://localhost:3005/waitlist/1
