@@ -32,8 +32,8 @@ export class ReservationsController {
 
     @UseGuards(AuthGuard)
     @Delete('/:id')
-    cancelReservation(@Param('id') id: string) {
-        return this.reservationsService.cancelReservation(parseInt(id));
+    cancelReservation(@Param('id') id: string, @CurrentUser() user: User) {
+        return this.reservationsService.cancelReservation(parseInt(id), user.id );
     }
 
 

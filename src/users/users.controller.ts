@@ -13,6 +13,7 @@ import { CurrentUserInterceptor } from "./interceptors/current-user.interceptor"
 import { AuthGuard } from "src/auth/guards/auth.guards";
 import { AdminGuard } from "src/users/guards/admin.guards";
 import { CurrentUserMiddleware } from "./middlewares/currentUser.middleware";
+import { CoachGuard } from "./guards/coach.guard";
 
 @UseInterceptors(CurrentUserInterceptor)
 
@@ -20,7 +21,7 @@ import { CurrentUserMiddleware } from "./middlewares/currentUser.middleware";
 export class UsersController {
    
         constructor(private usersService: UsersService ,private  authService: AuthService) {}
- 
+        @UseGuards(AuthGuard)
         @Patch('/:id')
         updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
              return this.usersService.updateUser(parseInt(id), body);
@@ -35,7 +36,8 @@ export class UsersController {
             return this.usersService.findOne(parseInt(id));
         }
         
-        @UseGuards(AuthGuard)
+        @UseGuards(AdminGuard)
+        @Serialize(UserDto)
         @Get()
         findAllUsers() {
             return this.usersService.findAllUsers();

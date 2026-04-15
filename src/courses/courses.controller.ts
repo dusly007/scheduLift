@@ -46,6 +46,7 @@ export class CoursesController {
         return this.coursesService.importAPi();
     }
 
+    @UseGuards(AdminGuard)
     @Patch('/:id/toggle')
     toggleActive(@Param('id') id: string) {
         return this.coursesService.toggleActive(parseInt(id));
