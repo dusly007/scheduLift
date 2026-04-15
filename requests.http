@@ -117,3 +117,22 @@ GET http://localhost:3005/wait-list/user
 
 ### Se retirer de la liste d'attente
 DELETE http://localhost:3005/waitlist/1
+
+### créer un message contact
+POST http://localhost:3005/contact
+Content-Type: application/json
+
+{
+  "name": "Alben",
+  "email": "alben@gmail.com",
+  "message": "Bonjour, je veux avoir plus d'informations."
+}
+
+### voir tous les messages contact
+GET http://localhost:3005/contact
+
+### voir un message contact par id
+GET http://localhost:3005/contact/1
+
+### supprimer un message contact
+DELETE http://localhost:3005/contact/1
