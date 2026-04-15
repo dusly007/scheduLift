@@ -6,6 +6,7 @@ import { AuthGuard } from "src/auth/guards/auth.guards";
 import { AdminGuard } from "src/users/guards/admin.guards";
 import { CurrentUserMiddleware } from "./middlewares/currentUser.middleware";
 import { CoachGuard } from "./guards/coach.guard";
+ 
 
 
 @Controller('users')
@@ -26,7 +27,6 @@ export class UsersController {
         }
         
         @UseGuards(AdminGuard)
-        @Serialize(UserDto)
         @Get()
         findAllUsers() {
             return this.usersService.findAllUsers();

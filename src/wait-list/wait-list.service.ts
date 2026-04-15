@@ -56,8 +56,7 @@ export class WaitListService {
         await this.repo.remove(waitlist);
         return { message: 'Retiré de la liste d\'attente avec succès' };
     }
-/*
-    //A FAIRE
+ //A FAIRE
     //patron observateur
     //quand on cancel
     @OnEvent('cancel.reservation')

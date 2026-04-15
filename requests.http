@@ -90,7 +90,7 @@ POST http://localhost:3005/reservations
 Content-Type: application/json
 
 {
-  "courseId": 2
+  "courseId": 41
 }
 ### Voir toutes les réservations
 GET http://localhost:3005/reservations
@@ -99,14 +99,14 @@ GET http://localhost:3005/reservations
 GET http://localhost:3005/reservations/user
 
 ### Annuler une réservation
-DELETE http://localhost:3005/reservations/2
+DELETE http://localhost:3005/reservations/1
 
 ### S'inscrire sur la liste d'attente
 POST http://localhost:3005/wait-list
 Content-Type: application/json
 
 {
-     "courseId": 2 
+     "courseId": 41 
 }
 
 ### Voir la liste d'attente d'un cours
