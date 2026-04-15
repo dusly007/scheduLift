@@ -48,6 +48,10 @@ export class CoursesService {
       throw new NotFoundException('Cours non trouvé');
     }
   
+    if (!course.isActive) {
+      throw new ForbiddenException('Ce cours est inactif');
+    }
+
     return course;
   }
   
