@@ -61,13 +61,23 @@ export class WaitListService {
     //patron observateur
     //quand on cancel
     @OnEvent('cancel.reservation')
-    async moveNext(playload: {courseId}){
+    async moveNext(payload: {courseId : number}) {
         //trouver le premier de la liste(FIFO)
-        const next = 
+        const next = await this.repo.findOne({
+            where: { courseId: payload.courseId },
+            order: { createdAt: 'ASC' }
+        });
         //ne rien faire si personne  
-        // Créer une réservation pour le premier en attente
-       //Retirer de la liste d'attente
-    }
-*/
+        if(!next) return;
 
+        // Créer une réservation pour le premier en attente
+        await this.reservationsService.createReservation(next.userId, payload.courseId);
+        
+        // Retirer de la liste d'attente
+        await this.repo.remove(next);
+       
+
+    }
+
+       
 }

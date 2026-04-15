@@ -3,18 +3,19 @@ POST http://localhost:3005/auth/signup
 content-type: application/json
  
 {
-    "email": "jonadmin@hotmail.com",
+    "email": "addmin@hotmail.com",
     "password": "mdp",
     "role": "admin"
     
 }
+
 
 ### signin user test
 POST http://localhost:3005/auth/signin
 content-type: application/json
  
 {
-    "email": "jonadmin@hotmail.com",
+    "email": "addmin@hotmail.com",
     "password": "mdp"
     
 }
@@ -24,7 +25,7 @@ POST http://localhost:3005/auth/signout
 content-type: application/json
  
 {
-    "email": "test@hotmail.com",
+    "email": "addmin@hotmail.com",
     "password": "mdp"
     
 }
@@ -38,17 +39,17 @@ GET http://localhost:3005/users
 
 
 ### tester route get user by id
-GET http://localhost:3005/users/19
+GET http://localhost:3005/users/16
 
 ### tester route delete user en étant
-DELETE http://localhost:3005/users/1
+DELETE http://localhost:3005/users/18
 
 ### Importation des cours depuis l'API 
 POST http://localhost:3005/courses/import
 
 
 ### Activer pu désactiver un cours
-PATCH http://localhost:3005/courses/4/toggle
+PATCH http://localhost:3005/courses/2/toggle
 
 
 ### test create course
@@ -68,7 +69,7 @@ Content-Type: application/json
 GET http://localhost:3005/courses
 
 ### tester route get course by id
-GET http://localhost:3005/courses/6
+GET http://localhost:3005/courses/3
 
 ### test update course
 PATCH http://localhost:3005/courses/2
@@ -84,30 +85,35 @@ DELETE http://localhost:3005/courses/4
 ### test import api courses
 POST http://localhost:3005/courses/import
 
-# Créer une réservation
+### Créer une réservation
 POST http://localhost:3005/reservations
 Content-Type: application/json
-Body: { "courseId": 1 }
 
-# Voir toutes les réservations
+{
+  "courseId": 2
+}
+### Voir toutes les réservations
 GET http://localhost:3005/reservations
 
-# Voir mes réservations
+### Voir mes réservations
 GET http://localhost:3005/reservations/user
 
-# Annuler une réservation
-DELETE http://localhost:3005/reservations/1
+### Annuler une réservation
+DELETE http://localhost:3005/reservations/2
 
-# S'inscrire sur la liste d'attente
-POST http://localhost:3005/waitlist
+### S'inscrire sur la liste d'attente
+POST http://localhost:3005/wait-list
 Content-Type: application/json
-Body: { "courseId": 1 }
 
-# Voir la liste d'attente d'un cours
-GET http://localhost:3005/waitlist/course/1
+{
+     "courseId": 2 
+}
 
-# Voir mes listes d'attente
-GET http://localhost:3005/waitlist/user
+### Voir la liste d'attente d'un cours
+GET http://localhost:3005/waitlist/course/2
 
-# Se retirer de la liste d'attente
+### Voir mes listes d'attente
+GET http://localhost:3005/wait-list/user
+
+### Se retirer de la liste d'attente
 DELETE http://localhost:3005/waitlist/1

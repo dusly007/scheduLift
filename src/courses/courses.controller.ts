@@ -40,11 +40,13 @@ export class CoursesController {
     }
     
     //route pour import api
+    @UseGuards(AdminGuard)
     @Post('/import')
     import() {
         return this.coursesService.importAPi();
     }
 
+    @UseGuards(AdminGuard)
     @Patch('/:id/toggle')
     toggleActive(@Param('id') id: string) {
         return this.coursesService.toggleActive(parseInt(id));

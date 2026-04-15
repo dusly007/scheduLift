@@ -4,6 +4,8 @@ import { UpdateUserDto } from "./dtos/update-user-dto";
 import { AuthService } from "src/auth/auth.service";
 import { AuthGuard } from "src/auth/guards/auth.guards";
 import { AdminGuard } from "src/users/guards/admin.guards";
+import { CurrentUserMiddleware } from "./middlewares/currentUser.middleware";
+import { CoachGuard } from "./guards/coach.guard";
 
 
 @Controller('users')
@@ -23,7 +25,8 @@ export class UsersController {
             return this.usersService.findOne(parseInt(id));
         }
         
-        @UseGuards(AuthGuard)
+        @UseGuards(AdminGuard)
+        @Serialize(UserDto)
         @Get()
         findAllUsers() {
             return this.usersService.findAllUsers();
