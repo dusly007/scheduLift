@@ -14,6 +14,7 @@ export class ReservationsService {
         private eventEmitter: EventEmitter2,
     ) {}
 
+    //A FAIRE: logique qui met à jour les places restantes, vérifier que le cours existe, vérifier que le cours est actif
     async createReservation(userId: number, courseId:number){
         //vérifier cours existe
         const course = await this.coursesService.findCourseById(courseId);
