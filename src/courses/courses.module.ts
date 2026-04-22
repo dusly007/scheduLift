@@ -5,14 +5,15 @@ import { CoursesController } from './courses.controller';
 import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Course } from './course.entity';
+import { CoursesSeeder } from './courses.seeder';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Course]),//à faire: créer entité
-    HttpModule // faire appels API
+    TypeOrmModule.forFeature([Course]),
+    HttpModule 
   ],
-  providers: [CoursesService],
+  providers: [CoursesService, CoursesSeeder],
   controllers: [CoursesController],
-  exports: [CoursesService]// pour plus tard ex:reservation
+  exports: [CoursesService]
 })
 export class CoursesModule {}

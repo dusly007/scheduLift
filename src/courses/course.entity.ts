@@ -8,8 +8,8 @@ export class Course {
   @Column()
   title: string;
 
-  //@Column()
-  //bodyPart: string; 
+  @Column({ nullable: true })
+  bodyPart: string; 
 
   @Column({ type: 'text', nullable: true })
   description: string;

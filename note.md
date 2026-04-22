@@ -16,3 +16,5 @@ https://docs.nestjs.com/techniques/database
 https://typeorm.io/
 
 https://docs.nestjs.com/techniques/events
+
+Admin par défaut créé : admin@schedulift.com / admin123

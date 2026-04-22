@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { User, UserRole } from "../user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -26,7 +26,7 @@ export class UsersService {
         const user = await this.repo.findOne({ where: { id } });
         if (!user) {
             //lancer erreur not found
-            throw new Error('User not found');
+            throw new NotFoundException('User not found');
         }
  
         Object.assign(user, attrs);
@@ -44,6 +44,19 @@ export class UsersService {
         }
 
         return this.repo.remove(user)
+    }
+
+    async updateRole(id: number, role: UserRole) {
+        
+        if (!Object.values(UserRole).includes(role)) {
+            throw new BadRequestException('Rôle invalide — valeurs acceptées : client, coach, admin');
+        }
+        const user = await this.repo.findOneBy({ id });
+        if (!user) {
+            throw new NotFoundException('user not found');
+        }
+        user.role = role;
+        return this.repo.save(user);
     }
  
 }

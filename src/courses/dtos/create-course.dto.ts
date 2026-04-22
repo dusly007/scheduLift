@@ -7,6 +7,7 @@ export class CreateCourseDto {
   title: string;
 
   @IsString()
+  @IsOptional() 
   bodyPart: string;
 
   @IsString()

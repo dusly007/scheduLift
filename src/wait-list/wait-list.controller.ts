@@ -11,7 +11,6 @@ import { CoachGuard } from 'src/users/guards/coach.guard';
 export class WaitListController {
     constructor(private waitlistService: WaitListService) {}
 
-    @UseGuards(AuthGuard)
     @Post()
     addToWaitlist(@Body() body: CreateWaitListDto, @CurrentUser() user: User) {
         return this.waitlistService.addToWaitlist(user.id, body.courseId);
@@ -23,13 +22,11 @@ export class WaitListController {
         return this.waitlistService.findWaitlistByCourse(parseInt(id));
     }
 
-    @UseGuards(AuthGuard)
     @Get('/user')
     findMyWaitlist(@CurrentUser() user: User) {
         return this.waitlistService.findWaitlistByUser(user.id);
     }
 
-    @UseGuards(AuthGuard)
     @Delete('/:id')
     removeFromWaitlist(@Param('id') id: string) {
         return this.waitlistService.removeFromWaitlist(parseInt(id));

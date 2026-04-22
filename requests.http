@@ -3,7 +3,7 @@ POST http://localhost:3005/auth/signup
 content-type: application/json
  
 {
-    "email": "addmin@hotmail.com",
+    "email": "notaddmin@hotmail.com",
     "password": "mdp",
     "role": "admin"
     
@@ -15,7 +15,7 @@ POST http://localhost:3005/auth/signin
 content-type: application/json
  
 {
-    "email": "addmin@hotmail.com",
+    "email": "notaddmin@hotmail.com",
     "password": "mdp"
     
 }
@@ -25,7 +25,7 @@ POST http://localhost:3005/auth/signout
 content-type: application/json
  
 {
-    "email": "addmin@hotmail.com",
+    "email": "notaddmin@hotmail.com",
     "password": "mdp"
     
 }
@@ -61,7 +61,7 @@ Content-Type: application/json
   "bodyPart": "Full body",
   "description": "Cours de yoga debutant",
   "gifUrl": "https://example.com/yoga.gif",
-  "capacity": 15
+  "capacity": 1
 
 }
 
@@ -90,7 +90,7 @@ POST http://localhost:3005/reservations
 Content-Type: application/json
 
 {
-  "courseId": 2
+  "courseId": 6
 }
 ### Voir toutes les réservations
 GET http://localhost:3005/reservations
@@ -99,21 +99,36 @@ GET http://localhost:3005/reservations
 GET http://localhost:3005/reservations/user
 
 ### Annuler une réservation
-DELETE http://localhost:3005/reservations/2
+DELETE http://localhost:3005/reservations/3
 
 ### S'inscrire sur la liste d'attente
 POST http://localhost:3005/wait-list
 Content-Type: application/json
 
 {
-     "courseId": 2 
+     "courseId": 6
 }
 
 ### Voir la liste d'attente d'un cours
-GET http://localhost:3005/waitlist/course/2
+GET http://localhost:3005/wait-list/course/6
 
 ### Voir mes listes d'attente
 GET http://localhost:3005/wait-list/user
 
 ### Se retirer de la liste d'attente
 DELETE http://localhost:3005/waitlist/1
+
+### Voir les places restantes pour un cours
+GET http://localhost:3005/reservations/places/1
+
+### Se connecter en tant qu'admin
+POST http://localhost:3005/auth/signin
+Content-Type: application/json
+
+{
+    "email": "admin@schedulift.com",
+    "password": "admin123"
+}
+
+### Se déconnecter
+POST http://localhost:3005/auth/signout
