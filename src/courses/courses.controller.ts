@@ -18,12 +18,10 @@ export class CoursesController {
     create(@Body() body: CreateCourseDto, @CurrentUser() user : User) {
       return this.coursesService.createCourse(body, user);
     }
-   @UseGuards(AuthGuard)
     @Get()
     findAllCourses() {
       return this.coursesService.findAllCourses();
     }
-    @UseGuards(AuthGuard)
     @Get('/:id')
     findCourseById(@Param('id') id: string) {
       return this.coursesService.findCourseById(parseInt(id)); 
@@ -33,24 +31,17 @@ export class CoursesController {
     updateCourse(@Param('id') id: string, @Body() body: Partial<UpdateCoursesDto>) {
       return this.coursesService.updateCourse(parseInt(id), body);
     }
-    @UseGuards(CoachGuard)
-    @Delete('/:id')
-    deleteCourse(@Param('id') id: string) {
-      return this.coursesService.deleteCourse(parseInt(id));
-    }
-    
-    //route pour import api
-    @UseGuards(AdminGuard)
-    @Post('/import')
-    import() {
-        return this.coursesService.importAPi();
-    }
-
+ 
     @UseGuards(AdminGuard)
     @Patch('/:id/toggle')
     toggleActive(@Param('id') id: string) {
         return this.coursesService.toggleActive(parseInt(id));
     }
 
+    @UseGuards(CoachGuard)
+    @Delete('/:id')
+    deleteCourse(@Param('id') id: string) {
+      return this.coursesService.deleteCourse(parseInt(id));
+    }
     
 }

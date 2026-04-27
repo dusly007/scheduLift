@@ -1,19 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Session, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, UseGuards } from "@nestjs/common";
 import { UsersService } from "./service/users.service";
-import { CreateUserDto } from "../auth/dtos/create-user.dto";
 import { UpdateUserDto } from "./dtos/update-user-dto";
-import { UseInterceptors, ClassSerializerInterceptor } from "@nestjs/common";
-import { SerializeInterceptor } from "src/users/interceptors/serialize.interceptor";
+import { UseInterceptors } from "@nestjs/common";
 import { UserDto } from "./dtos/user.dto";
-import { Serialize } from "src/users/interceptors/serialize.interceptor"; 
+import { Serialize } from "src/users/interceptors/serialize.interceptor";
 import { AuthService } from "src/auth/auth.service";
-import { CurrentUser } from "../auth/decorators/current-user.decorator";
-import { User } from "./user.entity";
 import { CurrentUserInterceptor } from "./interceptors/current-user.interceptor";
 import { AuthGuard } from "src/auth/guards/auth.guards";
 import { AdminGuard } from "src/users/guards/admin.guards";
-import { CurrentUserMiddleware } from "./middlewares/currentUser.middleware";
-import { CoachGuard } from "./guards/coach.guard";
 
 @UseInterceptors(CurrentUserInterceptor)
 
@@ -47,6 +41,12 @@ export class UsersController {
         @Delete('/:id')
         removeUser(@Param('id') id: string){
             return this.usersService.removeUser(parseInt(id))
+        }
+
+        @UseGuards(AdminGuard)
+        @Patch('/:id/role')
+        updateRole(@Param('id') id: string, @Body('role') role: string) {
+            return this.usersService.updateRole(parseInt(id), role as any);
         }
 
 }

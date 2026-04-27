@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Session, UseGuards } from "@nestjs/common";
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { User } from '../users/user.entity'; // Pour typer @CurrentUser() user: User
+import { AuthGuard } from './guards/auth.guards';
 
 @Controller('auth')
 export class AuthController {
@@ -27,14 +28,15 @@ export class AuthController {
         }
         
         @Post('/signout')
-        async signout(@Body() body : CreateUserDto , @Session() session: any) {
+        async signout(@Session() session: any) {
             //console.log(body);
             //return this.usersService.create(body.email, body.password);
             //const user = await this.authService.signin(body.email, body.password);
             session.userId = null
             //return user;
         }
-
+        
+        @UseGuards(AuthGuard)
         @Get('/whoami')
         whoAmI(@CurrentUser() user : User){
             console.log(user)

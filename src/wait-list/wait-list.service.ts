@@ -23,6 +23,13 @@ export class WaitListService {
             throw new BadRequestException('Ce cours n\'est pas complet, vous pouvez réserver directement');
         }
 
+    // vérifier que l'utilisateur n'a pas déjà une réservation
+        const dejaReserve = await this.reservationsService.findOneReservation(userId, courseId);
+            if (dejaReserve) {
+            throw new BadRequestException('Vous avez déjà une réservation pour ce cours');
+        }
+
+
         const dejaEnAttente = await this.repo.findOne({ where: { userId, courseId } });
         if (dejaEnAttente) {
             throw new BadRequestException('Vous êtes déjà sur la liste d\'attente');

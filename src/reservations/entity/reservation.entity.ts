@@ -15,7 +15,7 @@ export class Reservation{
 
     @ManyToOne(() => User)
     //plusieurs réservations --> 1 user
-    User: User;
+    user: User;
 
     @ManyToOne(() => Course)
     //plusieurs réservations --> 1 cours

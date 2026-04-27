@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { Reservation } from './entity/reservation.entity';
 import { CoursesService } from '../courses/courses.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CurrentUserMiddleware } from 'src/users/middlewares/currentUser.middleware';
 
 @Injectable()
 export class ReservationsService {
@@ -88,6 +87,21 @@ export class ReservationsService {
         )
 
         return {message: 'Réservation annulé avec succès'}
+    }
+
+    async getPlacesRestantes(courseId: number) {
+        const course = await this.coursesService.findCourseById(courseId);
+        const count = await this.repo.count({ where: { courseId } });
+        return {
+            courseId,
+            capacity: course.capacity,
+            reserved: count,
+            placesRestantes: course.capacity - count
+        };
+    }
+
+    findOneReservation(userId: number, courseId: number) {
+        return this.repo.findOne({ where: { userId, courseId } });
     }
 
 }

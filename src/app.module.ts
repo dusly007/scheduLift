@@ -12,25 +12,28 @@ import { Reservation } from './reservations/entity/reservation.entity';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { WaitList } from './wait-list/wait-list.entity';
 import { WaitListModule } from './wait-list/wait-list.module';
-import { ContactModule } from './contact/contact.module';
+import { ConfigModule } from '@nestjs/config';
 import { Contact } from './contact/contact.entity';
+import { ContactModule } from './contact/contact.module';
+
 @Module({
-  imports: [TypeOrmModule.forRoot(
-    {
-  type: 'sqlite',
-  database: 'db.sqlite',
-  entities: [User, Course, Reservation, WaitList, Contact],
-  autoLoadEntities: true,
-  synchronize: true
-}
-),
-ContactModule,
-UsersModule,
-AuthModule,
-CoursesModule,
-ReservationsModule,
-WaitListModule,
-EventEmitterModule.forRoot()],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }), //chargement des variables d'environnement
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: 'db.sqlite',
+      entities: [User, Course, Reservation, WaitList, Contact], 
+      autoLoadEntities: true,
+      synchronize: true
+    }),
+    UsersModule,
+    AuthModule,
+    CoursesModule,
+    ReservationsModule,
+    WaitListModule,
+    ContactModule, 
+    EventEmitterModule.forRoot(),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
