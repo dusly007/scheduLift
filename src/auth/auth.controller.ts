@@ -36,11 +36,10 @@ export class AuthController {
             //return user;
         }
         
-        @UseGuards(AuthGuard)
         @Get('/whoami')
         whoAmI(@CurrentUser() user : User){
             console.log(user)
-            return user
+            return user || null;
         }
         
     
