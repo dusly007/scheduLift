@@ -60,7 +60,10 @@ export class ReservationsService {
     }
 
     findReservationsByUser(userId: number){
-        return this.repo.find({ where: { userId } });
+        return this.repo.find({
+             where: { userId },
+             relations: ['course'] // détails du cours 
+            });
     }
 
     findAllReservationsByCourse(courseId: number) {
