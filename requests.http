@@ -1,9 +1,21 @@
+
 ### create user test
 POST http://localhost:3005/auth/signup
 content-type: application/json
  
 {
-    "email": "notaddmin@hotmail.com",
+    "email": "albenmatonde@gmail.com",
+    "password": "mdp",
+    "role": "admin"
+    
+}
+
+### create user test
+POST http://localhost:3005/auth/signup
+content-type: application/json
+ 
+{
+    "email": "2288532@cegepmv.ca",
     "password": "mdp",
     "role": "admin"
     
@@ -15,7 +27,7 @@ POST http://localhost:3005/auth/signin
 content-type: application/json
  
 {
-    "email": "notaddmin@hotmail.com",
+    "email": "2288532@cegepmv.ca",
     "password": "mdp"
     
 }
@@ -25,7 +37,7 @@ POST http://localhost:3005/auth/signout
 content-type: application/json
  
 {
-    "email": "notaddmin@hotmail.com",
+    "email": "2288532@cegepmv.ca",
     "password": "mdp"
     
 }
@@ -126,9 +138,21 @@ POST http://localhost:3005/auth/signin
 Content-Type: application/json
 
 {
-    "email": "admin@schedulift.com",
-    "password": "admin123"
+    "email": "albenmatonde@gmail.com",
+    "password": "mdp"
 }
 
 ### Se déconnecter
 POST http://localhost:3005/auth/signout
+
+### créer un message contact
+POST http://localhost:3005/contact
+Content-Type: application/json
+
+{
+  "name": "Alben",
+  "email": "alben@gmail.com",
+  "message": "Bonjour."
+}
+### supprimer user
+DELETE http://localhost:3005/users/1

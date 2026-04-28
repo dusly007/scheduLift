@@ -1,13 +1,17 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { User, UserRole } from 'src/users/user.entity';
 import { Contact } from './contact.entity';
 import { CreateContactDto } from './dtos/create-contact.dto';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class ContactService {
   constructor(
     @InjectRepository(Contact) private repo: Repository<Contact>,
+    @InjectRepository(User) private userRepo: Repository<User>, 
+    private mailerService: MailerService,
   ) {}
 
   async createContact(attrs: CreateContactDto) {
@@ -29,7 +33,30 @@ export class ContactService {
       message: attrs.message.trim(),
     });
 
-    return await this.repo.save(contact);
+    const savedContact = await this.repo.save(contact);
+
+    //  récupérer tous les admins et leurs emails
+    const admins = await this.userRepo.find({
+      where: { role: UserRole.ADMIN },
+    });
+    
+    
+    const adminEmails = admins.map(admin => admin.email);
+    
+    // envoyer à tous les admins
+    await this.mailerService.sendMail({
+      to: adminEmails, 
+      subject: `Nouveau message de ${savedContact.name}`,
+      text: `
+    Nom: ${savedContact.name}
+    Email du client: ${savedContact.email}
+    
+    Message:
+    ${savedContact.message}
+      `,
+    });
+    
+    return savedContact;
   }
 
   findAllContacts() {
