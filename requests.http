@@ -17,7 +17,7 @@ content-type: application/json
 {
     "email": "2288532@cegepmv.ca",
     "password": "mdp",
-    "role": "admin"
+    "role": "client"
     
 }
 
