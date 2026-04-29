@@ -3,29 +3,29 @@ POST http://localhost:3005/auth/signup
 content-type: application/json
  
 {
-    "email": "nottaddmin@hotmail.com",
+    "email": "client@hotmail.com",
     "password": "mdp",
     "role": "client"
     
 }
 
 
-### signin user test
+### signin client test
 POST http://localhost:3005/auth/signin
 content-type: application/json
  
 {
-    "email": "notaddmin@hotmail.com",
+    "email": "client@hotmail.com",
     "password": "mdp"
     
 }
 
-### signout user test
+### signout client test
 POST http://localhost:3005/auth/signout
 content-type: application/json
  
 {
-    "email": "notaddmin@hotmail.com",
+    "email": "client@hotmail.com",
     "password": "mdp"
     
 }
@@ -41,8 +41,8 @@ GET http://localhost:3005/users
 ### tester route get user by id
 GET http://localhost:3005/users/16
 
-### tester route delete user en étant
-DELETE http://localhost:3005/users/18
+### tester route delete user en étant admin
+DELETE http://localhost:3005/users/2
 
 ### Importation des cours depuis l'API 
 POST http://localhost:3005/courses/import
@@ -69,7 +69,7 @@ Content-Type: application/json
 GET http://localhost:3005/courses
 
 ### tester route get course by id
-GET http://localhost:3005/courses/3
+GET http://localhost:3005/courses/2
 
 ### test update course
 PATCH http://localhost:3005/courses/2
