@@ -132,3 +132,16 @@ Content-Type: application/json
 
 ### Se déconnecter
 POST http://localhost:3005/auth/signout
+
+
+### créer un message contact
+POST http://localhost:3005/contact
+Content-Type: application/json
+
+{
+  "name": "Alben",
+  "email": "alben@gmail.com",
+  "message": "Bonjour."
+}
+### supprimer user
+DELETE http://localhost:3005/users/1
