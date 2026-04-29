@@ -7,6 +7,7 @@
 - 7) npm install @nestjs/axios axios
 - 8) npm install @nestjs-modules/mailer
 - 9) npm install @nestjs/config
+- 9) npm install @nestjs/event-emitter
 - 10) npx @nestjs/cli start --watch
 - 10) npm run start
 
