@@ -1,7 +1,7 @@
 import { IsString, IsNumber, IsUrl, MinLength, Min, IsBoolean, IsOptional } from 'class-validator';
 
 // validation pour création de cours POST
-export class UpdateCoursesDto {
+export class CreateCourseDto {
   @IsString()
   @MinLength(3)
   @IsOptional()

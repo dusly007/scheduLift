@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, AfterInsert} from 'typeorm'; 
+import { Entity, PrimaryGeneratedColumn, Column, AfterInsert } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
 export enum UserRole {
@@ -7,27 +7,41 @@ export enum UserRole {
   ADMIN = 'admin',
 }
 
+export enum UserSexe {
+  HOMME = 'homme',
+  FEMME = 'femme',
+  AUTRE = 'autre',
+}
+
 @Entity()
 export class User {
-    
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    email: string;
+  @Column({ default: '' })
+  prenom: string;
 
-    @Exclude()
-    @Column()
-    password: string;
+  @Column({ default: '' })
+  nom: string;
 
-    @Column({ type: 'varchar', default: UserRole.CLIENT })
-    role: UserRole;
+  @Column({ default: '' })
+  dateNaissance: string;
 
-    @AfterInsert()
-    logInsert(){
-        console.log(`Inserted user with id: ${this.id}`);
-    }
+  @Column({ type: 'varchar', default: UserSexe.AUTRE })
+  sexe: UserSexe;
 
-    //@Column({default : true})
-    //admin: boolean;
+  @Column()
+  email: string;
+
+  @Exclude()
+  @Column()
+  password: string;
+
+  @Column({ type: 'varchar', default: UserRole.CLIENT })
+  role: UserRole;
+
+  @AfterInsert()
+  logInsert() {
+    console.log(`Inserted user with id: ${this.id}`);
+  }
 }

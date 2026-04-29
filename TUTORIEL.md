@@ -5,8 +5,10 @@
 - 5) npm install cookie-session @types/cookie-session 
 - 6) npm install @nestjs/platform-express
 - 7) npm install @nestjs/axios axios
-- 8) npx @nestjs/cli start --watch
-- 8) npm run start
+- 8) npm install @nestjs-modules/mailer
+- 9) npm install @nestjs/config
+- 10) npx @nestjs/cli start --watch
+- 10) npm run start
 
 
 Pour push sur github
