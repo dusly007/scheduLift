@@ -16,6 +16,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { Contact } from './contact/contact.entity';
 import { ContactModule } from './contact/contact.module';
+import { ServiceModule } from './service/service.module';
+import { Service } from './service/service.entity';
+import { GroupeModule } from './groupe/groupe.module';
+import { Groupe } from './groupe/groupe.entity';
 
 @Module({
   imports: [
@@ -23,7 +27,7 @@ import { ContactModule } from './contact/contact.module';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      entities: [User, Course, Reservation, WaitList, Contact], 
+      entities: [User, Course, Reservation, WaitList, Contact, Service, Groupe], 
       autoLoadEntities: true,
       synchronize: true
     }),
@@ -51,7 +55,7 @@ import { ContactModule } from './contact/contact.module';
     ReservationsModule,
     WaitListModule,
     ContactModule, 
-    EventEmitterModule.forRoot(),
+    EventEmitterModule.forRoot(), ServiceModule, GroupeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

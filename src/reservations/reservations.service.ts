@@ -2,109 +2,97 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Reservation } from './entity/reservation.entity';
-import { CoursesService } from '../courses/courses.service';
+import { GroupeService } from '../groupe/groupe.service'; // remplace CoursesService
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class ReservationsService {
-        constructor(
+    constructor(
         @InjectRepository(Reservation) private repo: Repository<Reservation>,
-        private coursesService: CoursesService,
+        private groupeService: GroupeService, // remplace coursesService
         private eventEmitter: EventEmitter2,
     ) {}
 
-    //A FAIRE: logique qui met à jour les places restantes, vérifier que le cours existe, vérifier que le cours est actif
-    async createReservation(userId: number, courseId:number){
-        //vérifier cours existe
-        const course = await this.coursesService.findCourseById(courseId);
+    async createReservation(userId: number, groupeId: number) {
+        // vérifier que le groupe existe
+        const groupe = await this.groupeService.findGroupeById(groupeId);
 
-        //vérifier cours actif
-        if (!course.isActive){
-            throw new BadRequestException('Ce cours n\'est pas disponible');
+        // vérifier que le groupe est validé
+        if (!groupe.estValide) {
+            throw new BadRequestException('Ce groupe n\'est pas disponible');
         }
 
         // compter les réservations existantes
-        //.count() plus performant que .find().length au lieu de récupérer tous mes enregistrements
-        const currentReservationsCount = await this.repo.count({ 
-            where: { courseId } 
+        // .count() plus performant que .find().length au lieu de récupérer tous mes enregistrements
+        const currentReservationsCount = await this.repo.count({
+            where: { groupeId }
         });
 
-        // calculer places restantes 
-        const placesRestantes = course.capacity - currentReservationsCount;
+        // calculer places restantes
+        const placesRestantes = groupe.capaciteMax - currentReservationsCount;
 
         if (placesRestantes <= 0) {
             throw new BadRequestException(
-                'Ce cours est complet, vous pouvez vous inscrire sur la liste d\'attente'
+                'Ce groupe est complet, vous pouvez vous inscrire sur la liste d\'attente'
             );
         }
 
-        /*
-        //vérifier capacité
-        const reservations = await this.repo.find({where:{courseId}});
-        if (reservations.length >= course.capacity){
-            throw new BadRequestException('Ce cours est complet, vous pouvez vous inscrire sur la liste d\'attente');
-        }*/
+        const dejaReserve = await this.repo.findOne({ where: { userId, groupeId } });
+        if (dejaReserve) {
+            throw new BadRequestException('Vous avez déjà réservé ce groupe');
+        }
 
-        const dejaReserve = await this.repo.findOne({ where: { userId, courseId } });
-            if (dejaReserve) {
-                throw new BadRequestException('Vous avez déjà réservé ce cours');
+        const reservation = this.repo.create({ userId, groupeId });
+        return await this.repo.save(reservation);
     }
 
-
-        const reservation = this.repo.create({userId, courseId})
-        return await this.repo.save(reservation)
+    findAllReservations() {
+        return this.repo.find({ relations: ['groupe'] });
     }
 
-    findAllReservations(){
-        return this.repo.find();
-    }
-
-    findReservationsByUser(userId: number){
+    findReservationsByUser(userId: number) {
         return this.repo.find({
-             where: { userId },
-             relations: ['course'] // détails du cours 
-            });
+            where: { userId },
+            relations: ['groupe'] // détails du groupe
+        });
     }
 
-    findAllReservationsByCourse(courseId: number) {
-        return this.repo.find({ where: { courseId } });
+    findAllReservationsByGroupe(groupeId: number) {
+        return this.repo.find({ where: { groupeId } });
     }
 
-    //A FAIRE
-    async cancelReservation(id: number, userId: number){
-        const reservation = await this.repo.findOneBy({id});
+    findOneReservation(userId: number, groupeId: number) {
+        return this.repo.findOne({ where: { userId, groupeId } });
+    }
 
-        if(!reservation){
-            throw new NotFoundException('Réservation non trouvé')
+    async cancelReservation(id: number, userId: number) {
+        const reservation = await this.repo.findOneBy({ id });
+
+        if (!reservation) {
+            throw new NotFoundException('Réservation non trouvé');
         }
 
         if (reservation.userId !== userId) {
             throw new BadRequestException("Vous ne pouvez pas annuler la réservation d'un autre utilisateur");
         }
 
-        const {courseId} = reservation;
+        const { groupeId } = reservation;
         await this.repo.remove(reservation);
 
-        this.eventEmitter.emit(
-            'cancel.reservation',({courseId})
-        )
+        // patron observateur — notifier la waitlist qu'une place s'est libérée
+        this.eventEmitter.emit('cancel.reservation', { groupeId });
 
-        return {message: 'Réservation annulé avec succès'}
+        return { message: 'Réservation annulé avec succès' };
     }
 
-    async getPlacesRestantes(courseId: number) {
-        const course = await this.coursesService.findCourseById(courseId);
-        const count = await this.repo.count({ where: { courseId } });
+    async getPlacesRestantes(groupeId: number) {
+        const groupe = await this.groupeService.findGroupeById(groupeId);
+        const count = await this.repo.count({ where: { groupeId } });
         return {
-            courseId,
-            capacity: course.capacity,
+            groupeId,
+            capaciteMax: groupe.capaciteMax,
             reserved: count,
-            placesRestantes: course.capacity - count
+            placesRestantes: groupe.capaciteMax - count
         };
     }
-
-    findOneReservation(userId: number, courseId: number) {
-        return this.repo.findOne({ where: { userId, courseId } });
-    }
-
 }

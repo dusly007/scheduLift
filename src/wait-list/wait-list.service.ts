@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WaitList } from './wait-list.entity';
-import { CoursesService } from '../courses/courses.service';
+import { GroupeService } from '../groupe/groupe.service'; // remplace CoursesService
 import { ReservationsService } from '../reservations/reservations.service';
 import { OnEvent } from '@nestjs/event-emitter';
 
@@ -10,33 +10,39 @@ import { OnEvent } from '@nestjs/event-emitter';
 export class WaitListService {
     constructor(
         @InjectRepository(WaitList) private repo: Repository<WaitList>,
-        private coursesService: CoursesService,
+        private groupeService: GroupeService, // remplace coursesService
         private reservationsService: ReservationsService,
     ) {}
 
-    async addToWaitlist(userId: number, courseId: number) {
-        const course = await this.coursesService.findCourseById(courseId);
+    async addToWaitlist(userId: number, groupeId: number) {
+        // vérifier que le groupe existe
+        const groupe = await this.groupeService.findGroupeById(groupeId);
 
         // Vérifier cours complet
-        const reservations = await this.reservationsService.findAllReservationsByCourse(courseId);
-        if (reservations.length < course.capacity) {
-            throw new BadRequestException('Ce cours n\'est pas complet, vous pouvez réserver directement');
+        const reservations = await this.reservationsService.findAllReservationsByGroupe(groupeId);
+        if (reservations.length < groupe.capaciteMax) {
+            throw new BadRequestException('Ce groupe n\'est pas complet, vous pouvez réserver directement');
         }
 
-        const dejaEnAttente = await this.repo.findOne({ where: { userId, courseId } });
+        // vérifier que l'utilisateur n'a pas déjà une réservation
+        const dejaReserve = await this.reservationsService.findOneReservation(userId, groupeId);
+        if (dejaReserve) {
+            throw new BadRequestException('Vous avez déjà une réservation pour ce groupe');
+        }
+
+        const dejaEnAttente = await this.repo.findOne({ where: { userId, groupeId } });
         if (dejaEnAttente) {
             throw new BadRequestException('Vous êtes déjà sur la liste d\'attente');
         }
 
-        const waitlist = this.repo.create({ userId, courseId });
+        const waitlist = this.repo.create({ userId, groupeId });
         return await this.repo.save(waitlist);
     }
 
-
-    findWaitlistByCourse(courseId: number) {
+    findWaitlistByGroupe(groupeId: number) {
         //FIFO 
         return this.repo.find({
-            where: { courseId },
+            where: { groupeId },
             //ASC = plus petit au plus grand
             order: { createdAt: 'ASC' }
         });
@@ -56,27 +62,24 @@ export class WaitListService {
         await this.repo.remove(waitlist);
         return { message: 'Retiré de la liste d\'attente avec succès' };
     }
- //A FAIRE
+
+    //A FAIRE
     //patron observateur
     //quand on cancel
     @OnEvent('cancel.reservation')
-    async moveNext(payload: {courseId : number}) {
+    async moveNext(payload: { groupeId: number }) {
         //trouver le premier de la liste(FIFO)
         const next = await this.repo.findOne({
-            where: { courseId: payload.courseId },
+            where: { groupeId: payload.groupeId },
             order: { createdAt: 'ASC' }
         });
         //ne rien faire si personne  
-        if(!next) return;
+        if (!next) return;
 
         // Créer une réservation pour le premier en attente
-        await this.reservationsService.createReservation(next.userId, payload.courseId);
-        
+        await this.reservationsService.createReservation(next.userId, payload.groupeId);
+
         // Retirer de la liste d'attente
         await this.repo.remove(next);
-       
-
     }
-
-       
 }

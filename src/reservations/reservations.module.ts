@@ -3,12 +3,13 @@ import { ReservationsService } from './reservations.service';
 import { ReservationsController } from './reservations.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Reservation } from './entity/reservation.entity';
-import { CoursesModule } from 'src/courses/courses.module';
+import { GroupeModule } from 'src/groupe/groupe.module'; 
 
 @Module({
   imports : [
     TypeOrmModule.forFeature([Reservation]),
-    CoursesModule
+    GroupeModule 
+
   ],
   providers: [ReservationsService],
   controllers: [ReservationsController],

@@ -1,7 +1,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User, UserRole } from './user.entity';
+import { User, UserRole, UserSexe } from './user.entity'; 
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
 
@@ -36,6 +36,10 @@ export class UsersSeeder implements OnApplicationBootstrap {
             email: 'admin@schedulift.com',
             password,
             role: UserRole.ADMIN,
+            prenom: 'Admin',            // ajouter
+            nom: 'Schedulift',          // ajouter
+            dateNaissance: '1990-01-01', //ajouter
+            sexe: UserSexe.AUTRE,       // ajouter
         });
 
         await this.repo.save(admin);
@@ -45,11 +49,11 @@ export class UsersSeeder implements OnApplicationBootstrap {
     async seedCoaches() {
         // 5 coaches pour cours
         const coaches = [
-            { email: 'coach.poitrine@schedulift.com', password: 'coach123' },
-            { email: 'coach.cardio@schedulift.com',   password: 'coach123' },
-            { email: 'coach.yoga@schedulift.com',     password: 'coach123' },
-            { email: 'coach.dos@schedulift.com',      password: 'coach123' },
-            { email: 'coach.pilates@schedulift.com',  password: 'coach123' },
+            { email: 'coach.poitrine@schedulift.com', password: 'coach123', prenom: 'Dusly',  nom: 'Nestor'  },
+            { email: 'coach.cardio@schedulift.com',   password: 'coach123', prenom: 'Alben', nom: 'Matonde'  },
+            { email: 'coach.yoga@schedulift.com',     password: 'coach123', prenom: 'Jonathan', nom: 'Riquelme' },
+            { email: 'coach.dos@schedulift.com',      password: 'coach123', prenom: 'John',  nom: 'Doe'  },
+            { email: 'coach.pilates@schedulift.com',  password: 'coach123', prenom: 'Jane',   nom: 'Doe'   },
         ];
 
         for (const coachInfo of coaches) {
@@ -62,6 +66,10 @@ export class UsersSeeder implements OnApplicationBootstrap {
                 email: coachInfo.email,
                 password,
                 role: UserRole.COACH,
+                prenom: coachInfo.prenom,        
+                nom: coachInfo.nom,              
+                dateNaissance: '1990-01-01',     
+                sexe: UserSexe.AUTRE,            
             });
 
             await this.repo.save(coach);

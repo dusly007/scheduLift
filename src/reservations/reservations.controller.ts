@@ -8,13 +8,12 @@ import { AdminGuard } from 'src/users/guards/admin.guards';
 
 @Controller('reservations')
 export class ReservationsController {
-
     constructor(private reservationsService: ReservationsService) {}
 
     @UseGuards(AuthGuard)
     @Post()
     createReservation(@Body() body: CreateReservationDto, @CurrentUser() user: User) {
-        return this.reservationsService.createReservation(user.id, body.courseId);
+        return this.reservationsService.createReservation(user.id, body.groupeId);
     }
 
     @UseGuards(AuthGuard)
@@ -23,13 +22,13 @@ export class ReservationsController {
         return this.reservationsService.findReservationsByUser(user.id);
     }
 
-    //accessible à tous
-    @Get('/places/:courseId')
-    getPlacesRestantes(@Param('courseId') courseId: string) {
-        return this.reservationsService.getPlacesRestantes(parseInt(courseId));
+    // accessible à tous
+    @Get('/places/:groupeId')
+    getPlacesRestantes(@Param('groupeId') groupeId: string) {
+        return this.reservationsService.getPlacesRestantes(parseInt(groupeId));
     }
 
-    //sassurer que seulement admin a accès
+    // s'assurer que seulement admin a accès
     @UseGuards(AdminGuard)
     @Get()
     findAllReservations() {
@@ -39,7 +38,6 @@ export class ReservationsController {
     @UseGuards(AuthGuard)
     @Delete('/:id')
     cancelReservation(@Param('id') id: string, @CurrentUser() user: User) {
-        return this.reservationsService.cancelReservation(parseInt(id), user.id );
+        return this.reservationsService.cancelReservation(parseInt(id), user.id);
     }
-
 }

@@ -148,3 +148,18 @@ Content-Type: application/json
 }
 ### supprimer user
 DELETE http://localhost:3005/users/1
+
+### Récupérer tous les groupes
+GET http://localhost:3005/groupes
+
+### Récupérer les groupes d'un cours
+GET http://localhost:3005/groupes/course/1
+
+### Récupérer les places restantes d'un groupe
+GET http://localhost:3005/reservations/places/1
+
+### Récupérer tous les services
+GET http://localhost:3005/services
+
+### Récupérer tous les cours
+GET http://localhost:3005/courses

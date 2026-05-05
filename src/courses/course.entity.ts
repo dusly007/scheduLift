@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Service } from '../service/service.entity';
 
 @Entity()
 export class Course {
@@ -28,4 +29,15 @@ export class Course {
 
   @Column({ nullable: true })
   coachName: string; //pour savoir quel coach gere le cours
+
+    //  niveau du cours
+    @Column({ nullable: true })
+    niveau: string;
+
+    // relation vers Service
+    @Column({ nullable: true })
+    serviceId: number;
+
+    @ManyToOne(() => Service, service => service.courses, { nullable: true })
+    service: Service;
 }
