@@ -13,8 +13,10 @@ export class ReservationsController {
     @UseGuards(AuthGuard)
     @Post()
     createReservation(@Body() body: CreateReservationDto, @CurrentUser() user: User) {
-        return this.reservationsService.createReservation(user.id, body.groupeId);
+    // passer user complet pour validation âge/genre
+        return this.reservationsService.createReservation(user.id, body.groupeId, user);
     }
+
 
     @UseGuards(AuthGuard)
     @Get('/user')
@@ -38,6 +40,7 @@ export class ReservationsController {
     @UseGuards(AuthGuard)
     @Delete('/:id')
     cancelReservation(@Param('id') id: string, @CurrentUser() user: User) {
-        return this.reservationsService.cancelReservation(parseInt(id), user.id);
+    // passer user pour vérifier si admin
+        return this.reservationsService.cancelReservation(parseInt(id), user.id, user);
     }
 }

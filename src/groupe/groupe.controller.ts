@@ -35,8 +35,8 @@ export class GroupeController {
     // coach ou admin
     @UseGuards(CoachGuard)
     @Patch('/:id')
-    updateGroupe(@Param('id') id: string, @Body() body: Partial<CreateGroupeDto>) {
-        return this.groupeService.updateGroupe(parseInt(id), body);
+    updateGroupe(@Param('id') id: string, @Body() body: Partial<CreateGroupeDto>, @CurrentUser() user: User) {
+        return this.groupeService.updateGroupe(parseInt(id), body, user);
     }
 
     @UseGuards(AdminGuard)
@@ -48,7 +48,7 @@ export class GroupeController {
     // coach ou admin
     @UseGuards(CoachGuard)
     @Delete('/:id')
-    deleteGroupe(@Param('id') id: string) {
-        return this.groupeService.deleteGroupe(parseInt(id));
+    deleteGroupe(@Param('id') id: string, @CurrentUser() user: User) {
+        return this.groupeService.deleteGroupe(parseInt(id), user);
     }
 }

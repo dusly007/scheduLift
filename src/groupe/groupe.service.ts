@@ -27,12 +27,23 @@ export class GroupeService {
             throw new BadRequestException('Genre invalide — valeurs acceptées : homme, femme, mixte');
         }
 
+        // vérifier dateFin après dateDebut
+        if (attrs.dateDebut && attrs.dateFin && new Date(attrs.dateFin) <= new Date(attrs.dateDebut)) {
+            throw new BadRequestException('La date de fin doit être après la date de début');
+        }
+
         // patron stratégie selon le rôle
         let estValide: boolean;
         if (user.role === UserRole.ADMIN) {
             estValide = true;  
         } else if (user.role === UserRole.COACH) {
             estValide = false; 
+            // validation coach — seulement ses propres cours
+            if (attrs.coachName && attrs.coachName !== user.email) {
+                throw new ForbiddenException('Vous ne pouvez créer des groupes que pour vos propres cours');
+            }
+            // forcer le coachName à l'email du coach connecté
+            attrs.coachName = user.email;
         } else {
             throw new ForbiddenException('Accès refusé');
         }
@@ -66,11 +77,16 @@ export class GroupeService {
         return groupe;
     }
 
-    // modifier un groupe ,coach et admin
-    async updateGroupe(id: number, attrs: Partial<CreateGroupeDto>) {
+    // modifier un groupe — coach et admin
+    async updateGroupe(id: number, attrs: Partial<CreateGroupeDto>, user: User) {
         const groupe = await this.repo.findOneBy({ id });
         if (!groupe) {
             throw new NotFoundException('Groupe non trouvé');
+        }
+
+        // validation coach — seulement ses propres groupes
+        if (user.role === UserRole.COACH && groupe.coachName !== user.email) {
+            throw new ForbiddenException('Vous ne pouvez modifier que vos propres groupes');
         }
 
         // vérifier capacité si modifiée
@@ -78,16 +94,32 @@ export class GroupeService {
             throw new BadRequestException('La capacité doit être supérieure à 0');
         }
 
+        // vérifier tranche d'âge si modifiée
+        if (attrs.ageMin !== undefined && attrs.ageMax !== undefined && attrs.ageMin > attrs.ageMax) {
+            throw new BadRequestException('L\'âge minimum doit être inférieur à l\'âge maximum');
+        }
+
+        // vérifier dateFin après dateDebut si modifiées
+        if (attrs.dateDebut && attrs.dateFin && new Date(attrs.dateFin) <= new Date(attrs.dateDebut)) {
+            throw new BadRequestException('La date de fin doit être après la date de début');
+        }
+
         Object.assign(groupe, attrs);
         return await this.repo.save(groupe);
     }
 
     // supprimer un groupe — coach et admin
-    async deleteGroupe(id: number) {
+    async deleteGroupe(id: number, user: User) {
         const groupe = await this.repo.findOneBy({ id });
         if (!groupe) {
             throw new NotFoundException('Groupe non trouvé');
         }
+
+        // validation coach — seulement ses propres groupes
+        if (user.role === UserRole.COACH && groupe.coachName !== user.email) {
+            throw new ForbiddenException('Vous ne pouvez supprimer que vos propres groupes');
+        }
+
         await this.repo.remove(groupe);
         return { message: 'Groupe supprimé avec succès' };
     }

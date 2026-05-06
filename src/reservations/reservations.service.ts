@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Reservation } from './entity/reservation.entity';
 import { GroupeService } from '../groupe/groupe.service'; // remplace CoursesService
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { User, UserRole } from '../users/user.entity';
 
 @Injectable()
 export class ReservationsService {
@@ -13,13 +14,33 @@ export class ReservationsService {
         private eventEmitter: EventEmitter2,
     ) {}
 
-    async createReservation(userId: number, groupeId: number) {
+    async createReservation(userId: number, groupeId: number, user?: User) {
         // vérifier que le groupe existe
         const groupe = await this.groupeService.findGroupeById(groupeId);
 
         // vérifier que le groupe est validé
         if (!groupe.estValide) {
             throw new BadRequestException('Ce groupe n\'est pas disponible');
+        }
+
+        // vérifier âge et genre du client si user fourni
+        if (user) {
+            // vérifier le genre
+            if (groupe.genre !== 'mixte' && user.sexe !== groupe.genre) {
+                throw new BadRequestException(
+                    `Ce groupe est réservé aux ${groupe.genre}s`
+                );
+            }
+
+            // vérifier l'âge si dateNaissance présente
+            if (user.dateNaissance) {
+                const age = new Date().getFullYear() - new Date(user.dateNaissance).getFullYear();
+                if (age < groupe.ageMin || age > groupe.ageMax) {
+                    throw new BadRequestException(
+                        `Ce groupe est réservé aux ${groupe.ageMin} — ${groupe.ageMax} ans`
+                    );
+                }
+            }
         }
 
         // compter les réservations existantes
@@ -65,14 +86,16 @@ export class ReservationsService {
         return this.repo.findOne({ where: { userId, groupeId } });
     }
 
-    async cancelReservation(id: number, userId: number) {
+    async cancelReservation(id: number, userId: number, user?: User) {
         const reservation = await this.repo.findOneBy({ id });
 
         if (!reservation) {
             throw new NotFoundException('Réservation non trouvé');
         }
 
-        if (reservation.userId !== userId) {
+        // admin peut annuler n'importe quelle réservation
+        // client peut annuler seulement la sienne
+        if (user?.role !== UserRole.ADMIN && reservation.userId !== userId) {
             throw new BadRequestException("Vous ne pouvez pas annuler la réservation d'un autre utilisateur");
         }
 

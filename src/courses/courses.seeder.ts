@@ -42,13 +42,13 @@ export class CoursesSeeder implements OnApplicationBootstrap {
         const yoga = services.find(s => s.nom === 'Yoga & Bien-être');
         const collectifs = services.find(s => s.nom === 'Cours collectifs');
 
-        // chaque cours associé à son coach, mot-clé Pexels et service
+        // chaque cours associé à son coach, mot-clé Pexels et service — sans capacity
         const coursesACreer = [
-            { bodyPart: 'chest',      title: 'Musculation — Poitrine', description: 'Cours ciblé sur les pectoraux.',           capacity: 15, coachName: 'coach.poitrine@schedulift.com', searchQuery: 'chest press weightlifting', serviceId: musculation?.id },
-            { bodyPart: 'cardio',     title: 'Cardio Intensif',        description: 'Séance cardio pour brûler des calories.',  capacity: 20, coachName: 'coach.cardio@schedulift.com',   searchQuery: 'cardio running treadmill',  serviceId: cardio?.id      },
-            { bodyPart: 'waist',      title: 'Yoga & Étirements',      description: 'Yoga axé sur le tronc et la flexibilité.', capacity: 12, coachName: 'coach.yoga@schedulift.com',     searchQuery: 'yoga mat stretching',       serviceId: yoga?.id        },
-            { bodyPart: 'back',       title: 'Musculation — Dos',      description: 'Renforcement du dos et des lombaires.',     capacity: 15, coachName: 'coach.dos@schedulift.com',      searchQuery: 'back pull workout barbell', serviceId: musculation?.id },
-            { bodyPart: 'lower legs', title: 'Pilates',                description: 'Pilates centré sur les jambes.',           capacity: 10, coachName: 'coach.pilates@schedulift.com',  searchQuery: 'pilates exercise mat',      serviceId: collectifs?.id  },
+            { bodyPart: 'chest',      title: 'Musculation — Poitrine', description: 'Cours ciblé sur les pectoraux.',           coachName: 'coach.poitrine@schedulift.com', searchQuery: 'chest press weightlifting', serviceId: musculation?.id },
+            { bodyPart: 'cardio',     title: 'Cardio Intensif',        description: 'Séance cardio pour brûler des calories.',  coachName: 'coach.cardio@schedulift.com',   searchQuery: 'cardio running treadmill',  serviceId: cardio?.id      },
+            { bodyPart: 'waist',      title: 'Yoga & Étirements',      description: 'Yoga axé sur le tronc et la flexibilité.', coachName: 'coach.yoga@schedulift.com',     searchQuery: 'yoga mat stretching',       serviceId: yoga?.id        },
+            { bodyPart: 'back',       title: 'Musculation — Dos',      description: 'Renforcement du dos et des lombaires.',     coachName: 'coach.dos@schedulift.com',      searchQuery: 'back pull workout barbell', serviceId: musculation?.id },
+            { bodyPart: 'lower legs', title: 'Pilates',                description: 'Pilates centré sur les jambes.',           coachName: 'coach.pilates@schedulift.com',  searchQuery: 'pilates exercise mat',      serviceId: collectifs?.id  },
         ];
 
         for (const coursInfo of coursesACreer) {
@@ -64,7 +64,6 @@ export class CoursesSeeder implements OnApplicationBootstrap {
             const course = this.repo.create({
                 title: coursInfo.title,
                 description: coursInfo.description,
-                capacity: coursInfo.capacity,
                 gifUrl, // image de Pexels
                 bodyPart: coursInfo.bodyPart,
                 coachName: coursInfo.coachName, // associer le coach au cours
