@@ -27,5 +27,13 @@ export class CreateCourseDto {
   @IsBoolean()
   @IsOptional() // définit par service
   isActive?: boolean;
+
+    @IsString()
+    @IsOptional()
+    niveau: string;
+
+    @IsNumber()
+    @IsOptional()
+    serviceId: number;
   
 }
