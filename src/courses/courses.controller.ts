@@ -28,10 +28,9 @@ export class CoursesController {
     }
     @UseGuards(CoachGuard)
     @Patch('/:id')
-    updateCourse(@Param('id') id: string, @Body() body: Partial<UpdateCoursesDto>) {
-      return this.coursesService.updateCourse(parseInt(id), body);
+    updateCourse(@Param('id') id: string, @Body() body: Partial<UpdateCoursesDto>, @CurrentUser() user: User) {
+        return this.coursesService.updateCourse(parseInt(id), body, user);
     }
- 
     @UseGuards(AdminGuard)
     @Patch('/:id/toggle')
     toggleActive(@Param('id') id: string) {
@@ -40,8 +39,8 @@ export class CoursesController {
 
     @UseGuards(CoachGuard)
     @Delete('/:id')
-    deleteCourse(@Param('id') id: string) {
-      return this.coursesService.deleteCourse(parseInt(id));
+    deleteCourse(@Param('id') id: string, @CurrentUser() user: User) {
+      return this.coursesService.deleteCourse(parseInt(id), user);
     }
     
 }

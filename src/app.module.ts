@@ -14,19 +14,22 @@ import { WaitList } from './wait-list/wait-list.entity';
 import { WaitListModule } from './wait-list/wait-list.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { ContactModule } from './contact/contact.module';
 import { Contact } from './contact/contact.entity';
+import { ContactModule } from './contact/contact.module';
+import { ServiceModule } from './service/service.module';
+import { Service } from './service/service.entity';
+import { GroupeModule } from './groupe/groupe.module';
+import { Groupe } from './groupe/groupe.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-
+    ConfigModule.forRoot({ isGlobal: true }), //chargement des variables d'environnement
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      entities: [User, Course, Reservation, WaitList, Contact],
+      entities: [User, Course, Reservation, WaitList, Contact, Service, Groupe], 
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: true
     }),
 
     MailerModule.forRootAsync({
@@ -46,14 +49,13 @@ import { Contact } from './contact/contact.entity';
         },
       }),
     }),
-
     UsersModule,
     AuthModule,
     CoursesModule,
     ReservationsModule,
     WaitListModule,
-    ContactModule,
-    EventEmitterModule.forRoot(),
+    ContactModule, 
+    EventEmitterModule.forRoot(), ServiceModule, GroupeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ClassSerializerInterceptor ,ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 //import { Reflector } from '@nestjs/core';
 const cookieSession = require('cookie-session')
 
@@ -23,9 +23,6 @@ async function bootstrap() {
       transform: true
     }
   ));
- // app.useGlobalInterceptors(
-//    new ClassSerializerInterceptor(app.get(Reflector))
-//  )
   await app.listen(process.env.PORT ?? 3005);
 }
 bootstrap();

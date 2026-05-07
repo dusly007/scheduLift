@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
 import { User } from '../users/user.entity';
-import { Course } from '../courses/course.entity';
+import { Groupe } from '../groupe/groupe.entity';
 
 @Entity()
 export class WaitList {
@@ -11,13 +11,13 @@ export class WaitList {
     userId: number;
 
     @Column()
-    courseId: number;
+    groupeId: number;
 
     @ManyToOne(() => User)
     user: User;
 
-    @ManyToOne(() => Course)
-    course: Course;
+    @ManyToOne(() => Groupe)
+    groupe: Groupe;
 
     @CreateDateColumn()
     createdAt: Date; 

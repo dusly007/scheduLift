@@ -6,27 +6,32 @@ import { User } from '../users/user.entity';
 import { CreateWaitListDto } from './dtos/create-wait-list.dto';
 import { CoachGuard } from 'src/users/guards/coach.guard';
 
-@UseGuards(AuthGuard) 
+// toutes les routes nécessitent d'être connecté
+@UseGuards(AuthGuard)
 @Controller('wait-list')
 export class WaitListController {
     constructor(private waitlistService: WaitListService) {}
 
+    // s'inscrire sur la liste d'attente
     @Post()
     addToWaitlist(@Body() body: CreateWaitListDto, @CurrentUser() user: User) {
-        return this.waitlistService.addToWaitlist(user.id, body.courseId);
+        return this.waitlistService.addToWaitlist(user.id, body.groupeId);
     }
 
+    // voir la liste d'attente d'un groupe — coach et admin
     @UseGuards(CoachGuard)
-    @Get('/course/:id')
-    findWaitlistByCourse(@Param('id') id: string) {
-        return this.waitlistService.findWaitlistByCourse(parseInt(id));
+    @Get('/groupe/:id')
+    findWaitlistByGroupe(@Param('id') id: string) {
+        return this.waitlistService.findWaitlistByGroupe(parseInt(id));
     }
 
+    // voir mes listes d'attente
     @Get('/user')
     findMyWaitlist(@CurrentUser() user: User) {
         return this.waitlistService.findWaitlistByUser(user.id);
     }
 
+    // se retirer de la liste d'attente
     @Delete('/:id')
     removeFromWaitlist(@Param('id') id: string) {
         return this.waitlistService.removeFromWaitlist(parseInt(id));

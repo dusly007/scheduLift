@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException, Session } from '@nestjs/common';
-import { User, UserRole } from 'src/users/user.entity';
+import { User, UserRole, UserSexe } from 'src/users/user.entity';
 import { UsersService } from 'src/users/service/users.service';
 import { error } from 'console';
 import { randomBytes, scrypt as _scrypt} from 'crypto'; //pour generer notre salt
@@ -11,7 +11,13 @@ const scrypt = promisify(_scrypt);
 export class AuthService {
     constructor(private usersService: UsersService) {}
     
-    async signup(email : string, password : string, role: UserRole){
+    async signup(prenom: string,
+        nom: string,
+        dateNaissance: string,
+        sexe: UserSexe,
+        email: string,
+        password: string,
+        role: UserRole ){
         //1. check if email is in use
         const users = await this.usersService.findAllUsersByEmail(email);
             if (users.length){
@@ -29,7 +35,7 @@ export class AuthService {
         const result = salt + '.' + hash.toString('hex')
         
         //3.create new user
-        const user = await this.usersService.create(email, result, role)
+        const user = await this.usersService.create(prenom, nom, dateNaissance, sexe, email, result, role);
         
         //4.return user
         return user

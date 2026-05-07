@@ -1,15 +1,12 @@
 import { Body, Controller, Delete, Get, Param, Patch, UseGuards } from "@nestjs/common";
 import { UsersService } from "./service/users.service";
 import { UpdateUserDto } from "./dtos/update-user-dto";
-import { UseInterceptors } from "@nestjs/common";
 import { UserDto } from "./dtos/user.dto";
-import { Serialize } from "src/users/interceptors/serialize.interceptor";
 import { AuthService } from "src/auth/auth.service";
-import { CurrentUserInterceptor } from "./interceptors/current-user.interceptor";
 import { AuthGuard } from "src/auth/guards/auth.guards";
 import { AdminGuard } from "src/users/guards/admin.guards";
 
-@UseInterceptors(CurrentUserInterceptor)
+
 
 @Controller('users')
 export class UsersController {
@@ -21,17 +18,14 @@ export class UsersController {
              return this.usersService.updateUser(parseInt(id), body);
         }
 
-        //@UseInterceptors(ClassSerializerInterceptor)
-        //@UseInterceptors(new SerializeInterceptor(UserDto))
+        
         @UseGuards(AdminGuard)
-        @Serialize(UserDto)
         @Get('/:id')
         findUser(@Param('id') id: string) {
             return this.usersService.findOne(parseInt(id));
         }
         
         @UseGuards(AdminGuard)
-        @Serialize(UserDto)
         @Get()
         findAllUsers() {
             return this.usersService.findAllUsers();

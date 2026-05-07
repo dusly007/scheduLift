@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
 import { User } from 'src/users/user.entity';
-import { Course } from 'src/courses/course.entity';
+import { Groupe } from 'src/groupe/groupe.entity';
 
 @Entity()
 export class Reservation{
@@ -11,15 +11,15 @@ export class Reservation{
     userId: number;
 
     @Column()
-    courseId: number
+    groupeId: number;
 
     @ManyToOne(() => User)
     //plusieurs réservations --> 1 user
     user: User;
 
-    @ManyToOne(() => Course)
+    @ManyToOne(() => Groupe)
     //plusieurs réservations --> 1 cours
-    course: Course;
+    groupe: Groupe;
 
     @CreateDateColumn()
     createdAt: Date;
