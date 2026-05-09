@@ -20,6 +20,7 @@ import { ServiceModule } from './service/service.module';
 import { Service } from './service/service.entity';
 import { GroupeModule } from './groupe/groupe.module';
 import { Groupe } from './groupe/groupe.entity';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -55,7 +56,7 @@ import { Groupe } from './groupe/groupe.entity';
     ReservationsModule,
     WaitListModule,
     ContactModule, 
-    EventEmitterModule.forRoot(), ServiceModule, GroupeModule,
+    EventEmitterModule.forRoot(), ServiceModule, GroupeModule, PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
