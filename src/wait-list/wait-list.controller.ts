@@ -6,7 +6,6 @@ import { User } from '../users/user.entity';
 import { CreateWaitListDto } from './dtos/create-wait-list.dto';
 import { CoachGuard } from 'src/users/guards/coach.guard';
 
-// toutes les routes nécessitent d'être connecté
 @UseGuards(AuthGuard)
 @Controller('wait-list')
 export class WaitListController {
@@ -29,6 +28,12 @@ export class WaitListController {
     @Get('/user')
     findMyWaitlist(@CurrentUser() user: User) {
         return this.waitlistService.findWaitlistByUser(user.id);
+    }
+
+    // voir sa position dans la liste d'attente d'un groupe
+    @Get('/position/:groupeId')
+    getPosition(@Param('groupeId') groupeId: string, @CurrentUser() user: User) {
+        return this.waitlistService.getPosition(user.id, parseInt(groupeId));
     }
 
     // se retirer de la liste d'attente

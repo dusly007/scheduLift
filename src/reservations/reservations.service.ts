@@ -74,7 +74,7 @@ export class ReservationsService {
     findReservationsByUser(userId: number) {
         return this.repo.find({
             where: { userId },
-            relations: ['groupe'] // détails du groupe
+            relations: ['groupe', 'groupe.course'] // détails du groupe
         });
     }
 

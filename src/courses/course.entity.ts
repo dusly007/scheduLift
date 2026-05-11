@@ -35,6 +35,10 @@ export class Course {
   @Column({ nullable: true })
   serviceId: number;
 
+  // prix du cours en dollars
+  @Column({ type: 'float', default: 0 })
+  prix: number;
+
   @ManyToOne(() => Service, service => service.courses, { nullable: true })
   service: Service;
 }

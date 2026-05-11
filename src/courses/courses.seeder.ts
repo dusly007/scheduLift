@@ -44,11 +44,11 @@ export class CoursesSeeder implements OnApplicationBootstrap {
 
         // chaque cours associé à son coach, mot-clé Pexels et service — sans capacity
         const coursesACreer = [
-            { bodyPart: 'chest',      title: 'Musculation — Poitrine', description: 'Cours ciblé sur les pectoraux.',           coachName: 'coach.poitrine@schedulift.com', searchQuery: 'chest press weightlifting', serviceId: musculation?.id },
-            { bodyPart: 'cardio',     title: 'Cardio Intensif',        description: 'Séance cardio pour brûler des calories.',  coachName: 'coach.cardio@schedulift.com',   searchQuery: 'cardio running treadmill',  serviceId: cardio?.id      },
-            { bodyPart: 'waist',      title: 'Yoga & Étirements',      description: 'Yoga axé sur le tronc et la flexibilité.', coachName: 'coach.yoga@schedulift.com',     searchQuery: 'yoga mat stretching',       serviceId: yoga?.id        },
-            { bodyPart: 'back',       title: 'Musculation — Dos',      description: 'Renforcement du dos et des lombaires.',     coachName: 'coach.dos@schedulift.com',      searchQuery: 'back pull workout barbell', serviceId: musculation?.id },
-            { bodyPart: 'lower legs', title: 'Pilates',                description: 'Pilates centré sur les jambes.',           coachName: 'coach.pilates@schedulift.com',  searchQuery: 'pilates exercise mat',      serviceId: collectifs?.id  },
+            { bodyPart: 'chest',      title: 'Musculation — Poitrine', description: 'Cours ciblé sur les pectoraux.', prix:75,           coachName: 'coach.poitrine@schedulift.com', searchQuery: 'chest press weightlifting', serviceId: musculation?.id },
+            { bodyPart: 'cardio',     title: 'Cardio Intensif',        description: 'Séance cardio pour brûler des calories.',  prix:60,           coachName: 'coach.cardio@schedulift.com',   searchQuery: 'cardio running treadmill',  serviceId: cardio?.id      },
+            { bodyPart: 'waist',      title: 'Yoga & Étirements',      description: 'Yoga axé sur le tronc et la flexibilité.', prix:85,           coachName: 'coach.yoga@schedulift.com',     searchQuery: 'yoga mat stretching',       serviceId: yoga?.id        },
+            { bodyPart: 'back',       title: 'Musculation — Dos',      description: 'Renforcement du dos et des lombaires.',     prix:75,           coachName: 'coach.dos@schedulift.com',      searchQuery: 'back pull workout barbell', serviceId: musculation?.id },
+            { bodyPart: 'lower legs', title: 'Pilates',                description: 'Pilates centré sur les jambes.',           prix:90,           coachName: 'coach.pilates@schedulift.com',  searchQuery: 'pilates exercise mat',      serviceId: collectifs?.id  },
         ];
 
         for (const coursInfo of coursesACreer) {
@@ -68,6 +68,7 @@ export class CoursesSeeder implements OnApplicationBootstrap {
                 bodyPart: coursInfo.bodyPart,
                 coachName: coursInfo.coachName, // associer le coach au cours
                 serviceId: coursInfo.serviceId, // associer le service au cours
+                prix: coursInfo.prix,
                 isActive: true,
             });
 

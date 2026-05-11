@@ -1,4 +1,4 @@
-import { IsString, IsUrl, MinLength, IsBoolean, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsUrl, MinLength, IsBoolean, IsOptional, IsNumber, Min } from 'class-validator';
 
 // validation pour création de cours POST
 export class CreateCourseDto {
@@ -35,4 +35,11 @@ export class CreateCourseDto {
     @IsString()
     @IsOptional()
     coachName: string;
+
+    // prix du cours
+    @IsNumber()
+    @Min(0)
+    @IsOptional()
+    prix: number;
+
 }

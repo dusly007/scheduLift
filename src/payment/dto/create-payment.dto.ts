@@ -1,32 +1,25 @@
-// src/payment/dto/create-payment.dto.ts
 import { IsNotEmpty, IsString, IsDateString, IsNumber, IsNumberString, Length, IsInt, Min } from 'class-validator';
 
 export class CreatePaymentDto {
-  @IsString()
-  @IsNotEmpty()
-  cardNumber: string;
+    // informations de carte
+    @IsString()
+    @IsNotEmpty()
+    cardNumber: string;
 
-  @IsDateString()
-  @IsNotEmpty()
-  expiration: string;
+    @IsDateString()
+    @IsNotEmpty()
+    expiration: string;
 
-  @IsNumberString()
-  @Length(3, 3)
-  cvv: string;
+    @IsNumberString()
+    @Length(3, 3)
+    cvv: string;
 
-  @IsInt()
-  userId: number;
+    // groupeId — pour créer la réservation après paiement
+    @IsInt()
+    groupeId: number;
 
-  @IsInt()
-  courseId: number;
-
-  @IsInt()
-  groupeId: number;
-
-  @IsInt()
-  reservationId: number; 
-
-  @IsNumber()
-  @Min(0)
-  amount: number; 
+    // montant — doit correspondre au prix du cours
+    @IsNumber()
+    @Min(0)
+    amount: number;
 }

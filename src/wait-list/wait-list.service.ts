@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WaitList } from './wait-list.entity';
-import { GroupeService } from '../groupe/groupe.service'; // remplace CoursesService
+import { GroupeService } from '../groupe/groupe.service';
 import { ReservationsService } from '../reservations/reservations.service';
 import { OnEvent } from '@nestjs/event-emitter';
 
@@ -10,7 +10,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 export class WaitListService {
     constructor(
         @InjectRepository(WaitList) private repo: Repository<WaitList>,
-        private groupeService: GroupeService, // remplace coursesService
+        private groupeService: GroupeService,
         private reservationsService: ReservationsService,
     ) {}
 
@@ -18,7 +18,7 @@ export class WaitListService {
         // vérifier que le groupe existe
         const groupe = await this.groupeService.findGroupeById(groupeId);
 
-        // Vérifier cours complet
+        // vérifier groupe complet
         const reservations = await this.reservationsService.findAllReservationsByGroupe(groupeId);
         if (reservations.length < groupe.capaciteMax) {
             throw new BadRequestException('Ce groupe n\'est pas complet, vous pouvez réserver directement');
@@ -30,6 +30,7 @@ export class WaitListService {
             throw new BadRequestException('Vous avez déjà une réservation pour ce groupe');
         }
 
+        // vérifier déjà en attente
         const dejaEnAttente = await this.repo.findOne({ where: { userId, groupeId } });
         if (dejaEnAttente) {
             throw new BadRequestException('Vous êtes déjà sur la liste d\'attente');
@@ -40,16 +41,42 @@ export class WaitListService {
     }
 
     findWaitlistByGroupe(groupeId: number) {
-        //FIFO 
+        // FIFO
         return this.repo.find({
             where: { groupeId },
-            //ASC = plus petit au plus grand
             order: { createdAt: 'ASC' }
         });
     }
 
+    // waitlist d'un utilisateur avec infos du groupe
     findWaitlistByUser(userId: number) {
-        return this.repo.find({ where: { userId } });
+        return this.repo.find({
+            where: { userId },
+            relations: ['groupe', 'groupe.course'],
+            order: { createdAt: 'ASC' }
+        });
+    }
+
+    // position de l'utilisateur dans la liste d'attente d'un groupe
+    async getPosition(userId: number, groupeId: number) {
+        // récupérer toute la liste FIFO
+        const waitlist = await this.repo.find({
+            where: { groupeId },
+            order: { createdAt: 'ASC' }
+        });
+
+        // trouver la position — index + 1 pour commencer à 1
+        const position = waitlist.findIndex(w => w.userId === userId) + 1;
+
+        if (position === 0) {
+            throw new NotFoundException('Vous n\'êtes pas sur la liste d\'attente de ce groupe');
+        }
+
+        return {
+            position,
+            total: waitlist.length,
+            message: `Vous êtes ${position}${position === 1 ? 'er' : 'ème'} sur ${waitlist.length} en attente`,
+        };
     }
 
     async removeFromWaitlist(id: number) {
@@ -63,23 +90,22 @@ export class WaitListService {
         return { message: 'Retiré de la liste d\'attente avec succès' };
     }
 
-    //A FAIRE
-    //patron observateur
-    //quand on cancel
+    // patron observateur — quand une réservation est annulée
     @OnEvent('cancel.reservation')
     async moveNext(payload: { groupeId: number }) {
-        //trouver le premier de la liste(FIFO)
+        // trouver le premier de la liste (FIFO)
         const next = await this.repo.findOne({
             where: { groupeId: payload.groupeId },
             order: { createdAt: 'ASC' }
         });
-        //ne rien faire si personne  
+
+        // ne rien faire si personne
         if (!next) return;
 
-        // Créer une réservation pour le premier en attente
+        // créer une réservation pour le premier en attente
         await this.reservationsService.createReservation(next.userId, payload.groupeId);
 
-        // Retirer de la liste d'attente
+        // retirer de la liste d'attente
         await this.repo.remove(next);
     }
 }
