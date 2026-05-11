@@ -22,6 +22,15 @@ export class AdminNotification {
   read: boolean;
 
   @Column({ type: 'integer', nullable: true })
+  groupeId: number | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  groupeName: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  courseTitle: string | null;
+
+  @Column({ type: 'integer', nullable: true })
   courseId: number | null;
 
   @Column({ type: 'integer', nullable: true })

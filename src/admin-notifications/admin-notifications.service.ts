@@ -14,6 +14,9 @@ export class AdminNotificationsService {
   ) {}
 
   async createWaitlistGroupReadyNotification(attrs: {
+    groupeId?: number;
+    groupeName?: string;
+    courseTitle?: string;
     courseId?: number;
     serviceId?: number;
     waitlistCount: number;
@@ -21,37 +24,46 @@ export class AdminNotificationsService {
     if (!attrs.waitlistCount || attrs.waitlistCount < 1) {
       throw new BadRequestException('Nombre de personnes en attente invalide');
     }
-
-    if (!attrs.courseId && !attrs.serviceId) {
-      throw new BadRequestException('Un cours ou un service doit être lié à la notification');
+  
+    if (!attrs.groupeId && !attrs.courseId && !attrs.serviceId) {
+      throw new BadRequestException('Un groupe, un cours ou un service doit être lié à la notification');
     }
-
+  
     const existingNotification = await this.repo.findOne({
       where: {
         notificationType: AdminNotificationType.WAITLIST_GROUP_READY,
+        groupeId: attrs.groupeId ?? IsNull(),
         courseId: attrs.courseId ?? IsNull(),
         serviceId: attrs.serviceId ?? IsNull(),
         read: false,
       },
     });
-
+  
+    const groupeText = attrs.groupeName || `Groupe #${attrs.groupeId}`;
+    const coursText = attrs.courseTitle || 'cours non précisé';
+  
     if (existingNotification) {
       existingNotification.waitlistCount = attrs.waitlistCount;
-      existingNotification.message = `Il y a maintenant ${attrs.waitlistCount} personnes en attente. Vous pouvez créer un nouveau groupe.`;
-
+      existingNotification.groupeName = groupeText;
+      existingNotification.courseTitle = coursText;
+      existingNotification.message = `Le ${groupeText} du cours ${coursText} a maintenant ${attrs.waitlistCount} personne${attrs.waitlistCount > 1 ? 's' : ''} en liste d'attente. Vous pouvez créer un nouveau groupe.`;
+  
       return this.repo.save(existingNotification);
     }
-
+  
     const notification = this.repo.create({
       notificationType: AdminNotificationType.WAITLIST_GROUP_READY,
       title: 'Nouveau groupe recommandé',
-      message: `Il y a ${attrs.waitlistCount} personnes en attente. Vous pouvez créer un nouveau groupe.`,
+      message: `Le ${groupeText} du cours ${coursText} a ${attrs.waitlistCount} personne${attrs.waitlistCount > 1 ? 's' : ''} en liste d'attente. Vous pouvez créer un nouveau groupe.`,
+      groupeId: attrs.groupeId ?? null,
+      groupeName: groupeText,
+      courseTitle: coursText,
       courseId: attrs.courseId ?? null,
       serviceId: attrs.serviceId ?? null,
       waitlistCount: attrs.waitlistCount,
       read: false,
     });
-
+  
     return this.repo.save(notification);
   }
 

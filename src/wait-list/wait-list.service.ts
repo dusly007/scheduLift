@@ -5,6 +5,7 @@ import { WaitList } from './wait-list.entity';
 import { GroupeService } from '../groupe/groupe.service';
 import { ReservationsService } from '../reservations/reservations.service';
 import { OnEvent } from '@nestjs/event-emitter';
+import { AdminNotificationsService } from '../admin-notifications/admin-notifications.service';
 
 @Injectable()
 export class WaitListService {
@@ -12,32 +13,46 @@ export class WaitListService {
         @InjectRepository(WaitList) private repo: Repository<WaitList>,
         private groupeService: GroupeService,
         private reservationsService: ReservationsService,
+        private adminNotificationsService: AdminNotificationsService,
     ) {}
 
     async addToWaitlist(userId: number, groupeId: number) {
-        // vérifier que le groupe existe
         const groupe = await this.groupeService.findGroupeById(groupeId);
-
-        // vérifier groupe complet
+    
         const reservations = await this.reservationsService.findAllReservationsByGroupe(groupeId);
         if (reservations.length < groupe.capaciteMax) {
             throw new BadRequestException('Ce groupe n\'est pas complet, vous pouvez réserver directement');
         }
-
-        // vérifier que l'utilisateur n'a pas déjà une réservation
+    
         const dejaReserve = await this.reservationsService.findOneReservation(userId, groupeId);
         if (dejaReserve) {
             throw new BadRequestException('Vous avez déjà une réservation pour ce groupe');
         }
-
-        // vérifier déjà en attente
+    
         const dejaEnAttente = await this.repo.findOne({ where: { userId, groupeId } });
         if (dejaEnAttente) {
             throw new BadRequestException('Vous êtes déjà sur la liste d\'attente');
         }
-
+    
         const waitlist = this.repo.create({ userId, groupeId });
-        return await this.repo.save(waitlist);
+        const savedWaitlist = await this.repo.save(waitlist);
+    
+        const waitlistCount = await this.repo.count({
+            where: { groupeId },
+        });
+        
+        const MIN_WAITLIST_FOR_GROUP = 10;
+        
+        if (waitlistCount >= MIN_WAITLIST_FOR_GROUP) {
+            await this.adminNotificationsService.createWaitlistGroupReadyNotification({
+                groupeId,
+                groupeName: `Groupe #${groupe.id}`,
+                courseTitle: groupe.course?.title || 'Cours non précisé',
+                waitlistCount,
+            });
+        }
+    
+        return savedWaitlist;
     }
 
     findWaitlistByGroupe(groupeId: number) {

@@ -163,3 +163,7 @@ GET http://localhost:3005/services
 
 ### Récupérer tous les cours
 GET http://localhost:3005/courses
+
+### créer notification test
+POST http://localhost:3005/admin/notifications/test
+Content-Type: application/json

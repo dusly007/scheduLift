@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param, Patch } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Patch,Post } from '@nestjs/common';
 import { AdminNotificationsService } from './admin-notifications.service';
 
 @Controller('admin/notifications')
@@ -29,4 +29,12 @@ export class AdminNotificationsController {
   deleteNotification(@Param('id') id: string) {
     return this.adminNotificationsService.deleteNotification(Number(id));
   }
+
+  @Post('/test')
+  createTestNotification() {
+  return this.adminNotificationsService.createWaitlistGroupReadyNotification({
+    courseId: 1,
+    waitlistCount: 1,
+  });
+}
 }
