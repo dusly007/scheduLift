@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Reservation } from './entity/reservation.entity';
-import { GroupeService } from '../groupe/groupe.service'; // remplace CoursesService
+import { GroupeService } from '../groupe/groupe.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { User, UserRole } from '../users/user.entity';
 
@@ -10,7 +10,7 @@ import { User, UserRole } from '../users/user.entity';
 export class ReservationsService {
     constructor(
         @InjectRepository(Reservation) private repo: Repository<Reservation>,
-        private groupeService: GroupeService, // remplace coursesService
+        private groupeService: GroupeService,
         private eventEmitter: EventEmitter2,
     ) {}
 
@@ -21,6 +21,12 @@ export class ReservationsService {
         // vérifier que le groupe est validé
         if (!groupe.estValide) {
             throw new BadRequestException('Ce groupe n\'est pas disponible');
+        }
+
+        //  empêcher de réserver un groupe déjà passé
+        const maintenant = new Date();
+        if (new Date(groupe.dateFin) < maintenant) {
+            throw new BadRequestException('Ce groupe est déjà terminé, vous ne pouvez plus le réserver');
         }
 
         // vérifier âge et genre du client si user fourni
@@ -44,7 +50,6 @@ export class ReservationsService {
         }
 
         // compter les réservations existantes
-        // .count() plus performant que .find().length au lieu de récupérer tous mes enregistrements
         const currentReservationsCount = await this.repo.count({
             where: { groupeId }
         });
@@ -74,7 +79,7 @@ export class ReservationsService {
     findReservationsByUser(userId: number) {
         return this.repo.find({
             where: { userId },
-            relations: ['groupe', 'groupe.course'] // détails du groupe
+            relations: ['groupe', 'groupe.course']
         });
     }
 
