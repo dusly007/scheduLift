@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn , UpdateDateColumn} from 'typeorm';
 import { User } from '../users/user.entity';
 import { Groupe } from '../groupe/groupe.entity';
 
@@ -21,5 +21,12 @@ export class WaitList {
 
     @CreateDateColumn()
     createdAt: Date; 
+
+    // indique qu'une place est libérée — le client doit payer pour confirmer
+    @Column({ default: false })
+    pretAPayer: boolean;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
 
 }
