@@ -45,7 +45,7 @@ export class WaitListService {
             where: { groupeId },
         });
         
-        const MIN_WAITLIST_FOR_GROUP = 1;
+        const MIN_WAITLIST_FOR_GROUP = 10;
         
         if (waitlistCount >= MIN_WAITLIST_FOR_GROUP) {
             await this.adminNotificationsService.createWaitlistGroupReadyNotification({
