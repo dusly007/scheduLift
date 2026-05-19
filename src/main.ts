@@ -9,9 +9,11 @@ async function bootstrap() {
 
   // accepter requêtes frontend
   app.enableCors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'http://10.10.3.11:5173'],
     credentials: true, //cookies session
   });
+
+  app.setGlobalPrefix("/api")
 
   app.use(cookieSession({
     keys : ['mysecretkey']

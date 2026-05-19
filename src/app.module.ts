@@ -25,15 +25,27 @@ import { AdminNotificationsModule } from './admin-notifications/admin-notificati
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }), //chargement des variables d'environnement
-    TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'db.sqlite',
-      entities: [User, Course, Reservation, WaitList, Contact, Service, Groupe], 
-      autoLoadEntities: true,
-      synchronize: true
+    // Chargement global des variables d'environnement (.env ou environnement Kubernetes)
+    ConfigModule.forRoot({ isGlobal: true }), 
+
+    // Configuration dynamique pour basculer de SQLite à MySQL (Schedulift DB)
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'mysql',
+        host: config.get<string>('DB_HOST', '10.10.3.11'),
+        port: config.get<number>('DB_PORT', 3306),
+        
+        username: config.get<string>('DB_USER', 'root'),
+        password: config.get<string>('DB_PASSWORD', 'root'),
+        database: config.get<string>('DB_NAME', 'schedulift'),
+        entities: [User, Course, Reservation, WaitList, Contact, Service, Groupe], 
+        autoLoadEntities: true,
+        synchronize: true, // Génère automatiquement tes tables Schedulift dans MySQL au démarrage
+      }),
     }),
 
+    // Configuration du module de courriels
     MailerModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
@@ -51,13 +63,19 @@ import { AdminNotificationsModule } from './admin-notifications/admin-notificati
         },
       }),
     }),
+
+    // Modules applicatifs de Schedulift
     UsersModule,
     AuthModule,
     CoursesModule,
     ReservationsModule,
     WaitListModule,
     ContactModule, 
-    EventEmitterModule.forRoot(), ServiceModule, GroupeModule, PaymentModule, AdminNotificationsModule,
+    EventEmitterModule.forRoot(), 
+    ServiceModule, 
+    GroupeModule, 
+    PaymentModule, 
+    AdminNotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
